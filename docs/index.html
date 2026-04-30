@@ -605,23 +605,81 @@ hr.ornament::before {
   .layout { grid-template-columns: 1fr; }
   pre { font-size: 0.7rem; }
   .lab { page-break-inside: avoid; }
+  .lang-toggle { display: none !important; }
+}
+
+/* ===== LANGUAGE TOGGLE ===== */
+html[lang="fr"] [data-lang="en"] { display: none !important; }
+html[lang="en"] [data-lang="fr"] { display: none !important; }
+
+.lang-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  display: inline-flex;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  background: var(--paper);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.lang-toggle button {
+  background: transparent;
+  border: none;
+  padding: 0.5rem 0.9rem;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.lang-toggle button + button { border-left: 1px solid var(--line); }
+.lang-toggle button:hover { background: var(--paper-warm); }
+.lang-toggle button.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+@media (max-width: 700px) {
+  .lang-toggle { top: 0.5rem; right: 0.5rem; font-size: 0.65rem; }
+  .lang-toggle button { padding: 0.4rem 0.7rem; }
 }
 </style>
 </head>
 <body>
+
+<!-- Language toggle -->
+<div class="lang-toggle" role="group" aria-label="Language selector">
+  <button type="button" data-set-lang="fr" class="active">FR</button>
+  <button type="button" data-set-lang="en">EN</button>
+</div>
 
 <!-- ============================================ -->
 <!-- HERO -->
 <!-- ============================================ -->
 <header class="hero">
   <div class="hero-inner">
-    <span class="eyebrow">Manuel Pratique · Édition 2026</span>
-    <h1>Apprendre Docker,<br><em>par la pratique.</em></h1>
-    <p class="lede">Un guide complet, illustré et progressif pour exploiter le repository Fast-Docker. Douze laboratoires, des schémas, une cheatsheet, et un parcours pensé pour celles et ceux qui partent de zéro.</p>
-    <div class="hero-meta">
+    <span class="eyebrow" data-lang="fr">Manuel Pratique · Édition 2026</span>
+    <span class="eyebrow" data-lang="en">Practical Manual · 2026 Edition</span>
+    <h1 data-lang="fr">Apprendre Docker,<br><em>par la pratique.</em></h1>
+    <h1 data-lang="en">Learn Docker,<br><em>the hands-on way.</em></h1>
+    <p class="lede" data-lang="fr">Un guide complet, illustré et progressif pour exploiter le repository Fast-Docker. Douze laboratoires, des schémas, une cheatsheet, et un parcours pensé pour celles et ceux qui partent de zéro.</p>
+    <p class="lede" data-lang="en">A complete, illustrated and progressive guide to make the most of the Fast-Docker repository. Twelve labs, diagrams, a cheatsheet, and a learning path designed for those starting from scratch.</p>
+    <div class="hero-meta" data-lang="fr">
       <div><span>Durée totale</span>~ 8 à 12 heures</div>
       <div><span>Laboratoires</span>12 ateliers pratiques</div>
       <div><span>Niveau</span>Débutant → Intermédiaire</div>
+      <div><span>Repository</span>Jihatech/Fast-Docker</div>
+    </div>
+    <div class="hero-meta" data-lang="en">
+      <div><span>Total time</span>~ 8 to 12 hours</div>
+      <div><span>Labs</span>12 hands-on exercises</div>
+      <div><span>Level</span>Beginner → Intermediate</div>
       <div><span>Repository</span>Jihatech/Fast-Docker</div>
     </div>
   </div>
@@ -633,7 +691,7 @@ hr.ornament::before {
 <div class="layout">
 
 <!-- TABLE OF CONTENTS -->
-<nav class="toc">
+<nav class="toc" data-lang="fr">
   <h3>Sommaire</h3>
   <ol>
     <li><a href="#intro">Introduction</a></li>
@@ -668,27 +726,74 @@ hr.ornament::before {
     <li><a href="#ressources">Ressources</a></li>
   </ol>
 </nav>
+<nav class="toc" data-lang="en">
+  <h3>Contents</h3>
+  <ol>
+    <li><a href="#intro">Introduction</a></li>
+    <li><a href="#prerequis">Prerequisites</a></li>
+    <li><a href="#concepts">Core concepts</a>
+      <ul class="toc-sub">
+        <li><a href="#archi">Architecture</a></li>
+        <li><a href="#cycle">Lifecycle</a></li>
+        <li><a href="#layers">Image layers</a></li>
+        <li><a href="#networks">Networks</a></li>
+      </ul>
+    </li>
+    <li><a href="#parcours">Learning path</a></li>
+    <li><a href="#labs">The twelve labs</a>
+      <ul class="toc-sub">
+        <li><a href="#lab01">LAB 01 · First container</a></li>
+        <li><a href="#lab02">LAB 02 · Volumes</a></li>
+        <li><a href="#lab03">LAB 03 · Compose</a></li>
+        <li><a href="#lab04">LAB 04 · Swarm</a></li>
+        <li><a href="#lab05">LAB 05 · Registry</a></li>
+        <li><a href="#lab06">LAB 06 · Transfers</a></li>
+        <li><a href="#lab07">LAB 07 · Linux build</a></li>
+        <li><a href="#lab08">LAB 08 · Windows build</a></li>
+        <li><a href="#lab09">LAB 09 · Configuration</a></li>
+        <li><a href="#lab10">LAB 10 · Multi-arch</a></li>
+        <li><a href="#lab11">LAB 11 · Security</a></li>
+        <li><a href="#lab12">LAB 12 · Healthchecks</a></li>
+      </ul>
+    </li>
+    <li><a href="#cheatsheet">Cheatsheet</a></li>
+    <li><a href="#kubernetes">Toward Kubernetes</a></li>
+    <li><a href="#ressources">Resources</a></li>
+  </ol>
+</nav>
 
 <!-- ============================================ -->
 <main>
 
 <!-- ===== 1. INTRODUCTION ===== -->
 <section id="intro">
-  <span class="section-num">§ 01 — Introduction</span>
-  <h2>Pourquoi ce guide existe</h2>
-  <p class="lede">Le repository <strong>Fast-Docker</strong> est une excellente base d'auto-formation, mais il s'adresse à des lecteurs qui savent déjà se repérer dans la documentation Docker. Ce guide accompagne pas à pas : il explique le <em>pourquoi</em> avant le <em>comment</em>, illustre les concepts par des schémas, et indique à chaque étape ce qu'il faut vérifier pour être sûr d'avoir compris.</p>
+  <span class="section-num" data-lang="fr">§ 01 — Introduction</span>
+  <span class="section-num" data-lang="en">§ 01 — Introduction</span>
+  <h2 data-lang="fr">Pourquoi ce guide existe</h2>
+  <h2 data-lang="en">Why this guide exists</h2>
+  <p class="lede" data-lang="fr">Le repository <strong>Fast-Docker</strong> est une excellente base d'auto-formation, mais il s'adresse à des lecteurs qui savent déjà se repérer dans la documentation Docker. Ce guide accompagne pas à pas : il explique le <em>pourquoi</em> avant le <em>comment</em>, illustre les concepts par des schémas, et indique à chaque étape ce qu'il faut vérifier pour être sûr d'avoir compris.</p>
+  <p class="lede" data-lang="en">The <strong>Fast-Docker</strong> repository is an excellent self-study foundation, but it speaks to readers already comfortable navigating Docker's documentation. This guide walks you through step by step: it explains the <em>why</em> before the <em>how</em>, illustrates concepts with diagrams, and tells you at each step what to verify to be sure you've understood.</p>
 
-  <h3>À qui s'adresse ce manuel</h3>
-  <ul>
+  <h3 data-lang="fr">À qui s'adresse ce manuel</h3>
+  <h3 data-lang="en">Who this manual is for</h3>
+  <ul data-lang="fr">
     <li><strong>Débutants complets</strong> qui ont entendu parler de Docker mais n'ont jamais lancé un conteneur.</li>
     <li><strong>Développeurs</strong> qui utilisent des images préparées par d'autres et veulent prendre le contrôle.</li>
     <li><strong>Administrateurs systèmes et SRE</strong> qui doivent industrialiser le déploiement d'applications.</li>
     <li><strong>Étudiants et stagiaires</strong> en cycle DevOps, infrastructure ou cybersécurité.</li>
     <li><strong>Architectes Cloud</strong> qui souhaitent consolider leurs fondamentaux avant d'aborder Kubernetes.</li>
   </ul>
+  <ul data-lang="en">
+    <li><strong>Complete beginners</strong> who have heard of Docker but have never launched a container.</li>
+    <li><strong>Developers</strong> who use images prepared by others and want to take control.</li>
+    <li><strong>System administrators and SREs</strong> who need to industrialize application deployments.</li>
+    <li><strong>Students and interns</strong> in DevOps, infrastructure or cybersecurity tracks.</li>
+    <li><strong>Cloud architects</strong> who want to solidify their fundamentals before tackling Kubernetes.</li>
+  </ul>
 
-  <h3>Ce que vous saurez faire à la fin</h3>
-  <div class="kv-grid">
+  <h3 data-lang="fr">Ce que vous saurez faire à la fin</h3>
+  <h3 data-lang="en">What you'll be able to do by the end</h3>
+  <div class="kv-grid" data-lang="fr">
     <div class="kv">
       <span class="kv-label">Construire</span>
       <div class="kv-value">Vos images</div>
@@ -710,63 +815,120 @@ hr.ornament::before {
       <p>Distroless, non-root, scan de vulnérabilités, healthchecks.</p>
     </div>
   </div>
+  <div class="kv-grid" data-lang="en">
+    <div class="kv">
+      <span class="kv-label">Build</span>
+      <div class="kv-value">Your images</div>
+      <p>Write clean, multi-stage, secure Dockerfiles.</p>
+    </div>
+    <div class="kv">
+      <span class="kv-label">Orchestrate</span>
+      <div class="kv-value">Multi-service</div>
+      <p>Have multiple containers talk to each other with Docker Compose.</p>
+    </div>
+    <div class="kv">
+      <span class="kv-label">Persist</span>
+      <div class="kv-value">Data & logs</div>
+      <p>Master volumes, bind mounts and storage strategies.</p>
+    </div>
+    <div class="kv">
+      <span class="kv-label">Secure</span>
+      <div class="kv-value">Production</div>
+      <p>Distroless, non-root, vulnerability scanning, healthchecks.</p>
+    </div>
+  </div>
 
-  <h3>Comment lire ce guide</h3>
-  <p>Chaque laboratoire suit la même structure : un <strong>objectif</strong> énoncé en une phrase, une <strong>durée estimée</strong>, un <strong>schéma</strong> mental ou visuel, les <strong>commandes essentielles</strong>, les <strong>pièges classiques</strong>, et un <strong>critère de validation</strong> qui vous permet de savoir, sans ambiguïté, si vous avez compris.</p>
-  <p>Lecture linéaire ou en zigzag : les douze laboratoires sont indépendants. Une recommandation d'ordre de progression est proposée au §4.</p>
+  <h3 data-lang="fr">Comment lire ce guide</h3>
+  <h3 data-lang="en">How to read this guide</h3>
+  <p data-lang="fr">Chaque laboratoire suit la même structure : un <strong>objectif</strong> énoncé en une phrase, une <strong>durée estimée</strong>, un <strong>schéma</strong> mental ou visuel, les <strong>commandes essentielles</strong>, les <strong>pièges classiques</strong>, et un <strong>critère de validation</strong> qui vous permet de savoir, sans ambiguïté, si vous avez compris.</p>
+  <p data-lang="en">Each lab follows the same structure: an <strong>objective</strong> stated in one sentence, an <strong>estimated duration</strong>, a mental or visual <strong>diagram</strong>, the <strong>essential commands</strong>, the <strong>classic pitfalls</strong>, and a <strong>validation criterion</strong> that lets you know, unambiguously, whether you've understood.</p>
+  <p data-lang="fr">Lecture linéaire ou en zigzag : les douze laboratoires sont indépendants. Une recommandation d'ordre de progression est proposée au §4.</p>
+  <p data-lang="en">Linear or zigzag reading: the twelve labs are independent. A recommended progression order is proposed in §4.</p>
 </section>
 
 <!-- ===== 2. PRÉREQUIS ===== -->
 <section id="prerequis">
-  <span class="section-num">§ 02 — Préparation</span>
-  <h2>Prérequis et installation</h2>
+  <span class="section-num" data-lang="fr">§ 02 — Préparation</span>
+  <span class="section-num" data-lang="en">§ 02 — Setup</span>
+  <h2 data-lang="fr">Prérequis et installation</h2>
+  <h2 data-lang="en">Prerequisites and installation</h2>
 
-  <h3>Connaissances supposées</h3>
-  <p>Aucune connaissance préalable de Docker n'est nécessaire. Il faut simplement être à l'aise avec :</p>
-  <ul>
+  <h3 data-lang="fr">Connaissances supposées</h3>
+  <h3 data-lang="en">Assumed knowledge</h3>
+  <p data-lang="fr">Aucune connaissance préalable de Docker n'est nécessaire. Il faut simplement être à l'aise avec :</p>
+  <p data-lang="en">No prior Docker knowledge is required. You simply need to be comfortable with:</p>
+  <ul data-lang="fr">
     <li>Un <strong>terminal</strong> (Bash sous Linux/macOS, PowerShell ou WSL2 sous Windows).</li>
     <li>Les commandes de base : <code>cd</code>, <code>ls</code>, <code>mkdir</code>, <code>cat</code>, redirection <code>&gt;</code>.</li>
     <li>La notion de <strong>variable d'environnement</strong> et de <strong>port réseau</strong>.</li>
     <li>Les bases de <strong>Git</strong> pour cloner le repository.</li>
   </ul>
+  <ul data-lang="en">
+    <li>A <strong>terminal</strong> (Bash on Linux/macOS, PowerShell or WSL2 on Windows).</li>
+    <li>Basic commands: <code>cd</code>, <code>ls</code>, <code>mkdir</code>, <code>cat</code>, redirection <code>&gt;</code>.</li>
+    <li>The notion of <strong>environment variable</strong> and <strong>network port</strong>.</li>
+    <li>The basics of <strong>Git</strong> to clone the repository.</li>
+  </ul>
 
-  <h3>Installer Docker</h3>
+  <h3 data-lang="fr">Installer Docker</h3>
+  <h3 data-lang="en">Install Docker</h3>
   <div class="cols-2">
     <div>
       <h4>Linux (Ubuntu/Debian)</h4>
-      <pre data-lang="bash"><code><span class="tok-c"># Méthode officielle, en une commande</span>
+      <div data-lang="fr"><pre data-lang="bash"><code><span class="tok-c"># Méthode officielle, en une commande</span>
 curl -fsSL https://get.docker.com | sh
 
 <span class="tok-c"># Ajouter votre utilisateur au groupe docker</span>
 sudo usermod -aG docker $USER
-<span class="tok-c"># Se déconnecter / reconnecter pour appliquer</span></code></pre>
+<span class="tok-c"># Se déconnecter / reconnecter pour appliquer</span></code></pre></div>
+      <div data-lang="en"><pre data-lang="bash"><code><span class="tok-c"># Official method, in one command</span>
+curl -fsSL https://get.docker.com | sh
+
+<span class="tok-c"># Add your user to the docker group</span>
+sudo usermod -aG docker $USER
+<span class="tok-c"># Log out / log back in to apply</span></code></pre></div>
     </div>
     <div>
-      <h4>macOS et Windows</h4>
-      <p>Installer <strong>Docker Desktop</strong> depuis <a href="https://www.docker.com/products/docker-desktop">docker.com</a>. Inclut le moteur, le CLI, Compose v2, BuildKit et une interface graphique.</p>
-      <p>Sous Windows, activer <strong>WSL2</strong> au préalable (c'est l'option par défaut dans l'installeur).</p>
+      <h4 data-lang="fr">macOS et Windows</h4>
+      <h4 data-lang="en">macOS and Windows</h4>
+      <p data-lang="fr">Installer <strong>Docker Desktop</strong> depuis <a href="https://www.docker.com/products/docker-desktop">docker.com</a>. Inclut le moteur, le CLI, Compose v2, BuildKit et une interface graphique.</p>
+      <p data-lang="en">Install <strong>Docker Desktop</strong> from <a href="https://www.docker.com/products/docker-desktop">docker.com</a>. Includes the engine, CLI, Compose v2, BuildKit and a GUI.</p>
+      <p data-lang="fr">Sous Windows, activer <strong>WSL2</strong> au préalable (c'est l'option par défaut dans l'installeur).</p>
+      <p data-lang="en">On Windows, enable <strong>WSL2</strong> beforehand (it's the default option in the installer).</p>
     </div>
   </div>
 
-  <h3>Vérifier l'installation</h3>
-  <pre data-lang="bash"><code><span class="tok-k">docker</span> version            <span class="tok-c"># client + daemon &gt;= 24.x</span>
+  <h3 data-lang="fr">Vérifier l'installation</h3>
+  <h3 data-lang="en">Verify the installation</h3>
+  <div data-lang="fr"><pre data-lang="bash"><code><span class="tok-k">docker</span> version            <span class="tok-c"># client + daemon &gt;= 24.x</span>
 <span class="tok-k">docker</span> compose version    <span class="tok-c"># v2.x (avec espace, pas de tiret)</span>
 <span class="tok-k">docker</span> buildx version     <span class="tok-c"># buildx présent par défaut</span>
-<span class="tok-k">docker</span> run hello-world    <span class="tok-c"># test fonctionnel</span></code></pre>
+<span class="tok-k">docker</span> run hello-world    <span class="tok-c"># test fonctionnel</span></code></pre></div>
+  <div data-lang="en"><pre data-lang="bash"><code><span class="tok-k">docker</span> version            <span class="tok-c"># client + daemon &gt;= 24.x</span>
+<span class="tok-k">docker</span> compose version    <span class="tok-c"># v2.x (with space, no dash)</span>
+<span class="tok-k">docker</span> buildx version     <span class="tok-c"># buildx ships by default</span>
+<span class="tok-k">docker</span> run hello-world    <span class="tok-c"># functional test</span></code></pre></div>
 
-  <div class="callout warn">
+  <div class="callout warn" data-lang="fr">
     <span class="callout-label">Attention</span>
     Si <code>docker-compose</code> (avec tiret) répond mais pas <code>docker compose</code> (avec espace), votre installation utilise la v1 dépréciée depuis juin 2023. Tous les exemples de ce guide utilisent la syntaxe v2.
   </div>
+  <div class="callout warn" data-lang="en">
+    <span class="callout-label">Warning</span>
+    If <code>docker-compose</code> (with dash) responds but <code>docker compose</code> (with space) doesn't, your installation uses v1, deprecated since June 2023. All examples in this guide use v2 syntax.
+  </div>
 
-  <h3>Cloner le repository</h3>
+  <h3 data-lang="fr">Cloner le repository</h3>
+  <h3 data-lang="en">Clone the repository</h3>
   <pre data-lang="bash"><code>git clone https://github.com/Jihatech/Fast-Docker.git
 <span class="tok-k">cd</span> Fast-Docker
 ls -la</code></pre>
 
-  <h3>Outils complémentaires recommandés</h3>
-  <p>Aucun n'est obligatoire, mais ils enrichissent l'apprentissage.</p>
-  <div class="table-wrap">
+  <h3 data-lang="fr">Outils complémentaires recommandés</h3>
+  <h3 data-lang="en">Recommended additional tools</h3>
+  <p data-lang="fr">Aucun n'est obligatoire, mais ils enrichissent l'apprentissage.</p>
+  <p data-lang="en">None are mandatory, but they enrich the learning experience.</p>
+  <div class="table-wrap" data-lang="fr">
   <table>
     <thead><tr><th>Outil</th><th>Rôle</th><th>Installation</th></tr></thead>
     <tbody>
@@ -778,17 +940,34 @@ ls -la</code></pre>
     </tbody>
   </table>
   </div>
+  <div class="table-wrap" data-lang="en">
+  <table>
+    <thead><tr><th>Tool</th><th>Role</th><th>Install</th></tr></thead>
+    <tbody>
+      <tr><td><code>dive</code></td><td>Inspect an image's layers</td><td><code>brew install dive</code></td></tr>
+      <tr><td><code>trivy</code></td><td>Vulnerability scanner</td><td><code>brew install trivy</code></td></tr>
+      <tr><td><code>hadolint</code></td><td>Dockerfile linter</td><td><code>brew install hadolint</code></td></tr>
+      <tr><td><code>ctop</code></td><td>top-like for containers</td><td><code>brew install ctop</code></td></tr>
+      <tr><td><code>lazydocker</code></td><td>Terminal UI for Docker</td><td><code>brew install lazydocker</code></td></tr>
+    </tbody>
+  </table>
+  </div>
 </section>
 
 <!-- ===== 3. CONCEPTS FONDAMENTAUX ===== -->
 <section id="concepts">
-  <span class="section-num">§ 03 — Théorie</span>
-  <h2>Les concepts qu'il faut comprendre avant de pratiquer</h2>
-  <p class="lede">Cinq notions structurent toute l'expérience Docker : l'architecture client/serveur, le cycle de vie du conteneur, le système de couches, les volumes, et les réseaux. En les visualisant correctement, l'essentiel des commandes deviennent évidentes.</p>
+  <span class="section-num" data-lang="fr">§ 03 — Théorie</span>
+  <span class="section-num" data-lang="en">§ 03 — Theory</span>
+  <h2 data-lang="fr">Les concepts qu'il faut comprendre avant de pratiquer</h2>
+  <h2 data-lang="en">The concepts to grasp before practicing</h2>
+  <p class="lede" data-lang="fr">Cinq notions structurent toute l'expérience Docker : l'architecture client/serveur, le cycle de vie du conteneur, le système de couches, les volumes, et les réseaux. En les visualisant correctement, l'essentiel des commandes deviennent évidentes.</p>
+  <p class="lede" data-lang="en">Five notions structure the entire Docker experience: client/server architecture, container lifecycle, the layer system, volumes, and networks. With these clearly in mind, most commands become obvious.</p>
 
   <!-- ARCHITECTURE -->
-  <h3 id="archi">Architecture Docker</h3>
-  <p>Docker est un système <strong>client / serveur</strong>. Quand vous tapez <code>docker run</code> dans votre terminal, vous parlez à un <em>client</em>. Ce client envoie une requête à un <em>daemon</em> (le serveur), qui se charge réellement de créer l'image, de lancer le conteneur, et de communiquer avec le <em>registry</em> où sont stockées les images publiées.</p>
+  <h3 id="archi" data-lang="fr">Architecture Docker</h3>
+  <h3 data-lang="en">Docker architecture</h3>
+  <p data-lang="fr">Docker est un système <strong>client / serveur</strong>. Quand vous tapez <code>docker run</code> dans votre terminal, vous parlez à un <em>client</em>. Ce client envoie une requête à un <em>daemon</em> (le serveur), qui se charge réellement de créer l'image, de lancer le conteneur, et de communiquer avec le <em>registry</em> où sont stockées les images publiées.</p>
+  <p data-lang="en">Docker is a <strong>client / server</strong> system. When you type <code>docker run</code> in your terminal, you talk to a <em>client</em>. That client sends a request to a <em>daemon</em> (the server), which actually does the work of creating the image, running the container, and communicating with the <em>registry</em> where published images are stored.</p>
 
   <figure class="diagram">
     <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Architecture Docker">
@@ -812,7 +991,8 @@ ls -la</code></pre>
       <rect class="box" x="30" y="120" width="160" height="100" rx="2"/>
       <text class="sub" x="110" y="145" text-anchor="middle">CLIENT</text>
       <text class="label" x="110" y="170" text-anchor="middle">docker CLI</text>
-      <text class="sub" x="110" y="195" text-anchor="middle">votre terminal</text>
+      <text class="sub" x="110" y="195" text-anchor="middle" data-lang="fr">votre terminal</text>
+      <text class="sub" x="110" y="195" text-anchor="middle" data-lang="en">your terminal</text>
 
       <!-- Daemon (host) -->
       <rect class="box" x="240" y="60" width="280" height="240" rx="2" stroke-dasharray="4,3"/>
@@ -851,10 +1031,11 @@ ls -la</code></pre>
       <path class="arrow-line" d="M 565 175 L 525 155"/>
       <text class="sub" x="545" y="125" text-anchor="middle">pull/push</text>
     </svg>
-    <figcaption><strong>Schéma 1.</strong> Architecture client / daemon / registry. Le CLI ne fait jamais le travail lui-même — il envoie des requêtes au daemon via une API REST locale.</figcaption>
+    <figcaption data-lang="fr"><strong>Schéma 1.</strong> Architecture client / daemon / registry. Le CLI ne fait jamais le travail lui-même — il envoie des requêtes au daemon via une API REST locale.</figcaption>
+    <figcaption data-lang="en"><strong>Diagram 1.</strong> Client / daemon / registry architecture. The CLI never does the work itself — it sends requests to the daemon via a local REST API.</figcaption>
   </figure>
 
-  <div class="kv-grid">
+  <div class="kv-grid" data-lang="fr">
     <div class="kv">
       <span class="kv-label">Client</span>
       <div class="kv-value">docker</div>
@@ -871,10 +1052,29 @@ ls -la</code></pre>
       <p>Bibliothèque distante où les images sont publiées et téléchargées.</p>
     </div>
   </div>
+  <div class="kv-grid" data-lang="en">
+    <div class="kv">
+      <span class="kv-label">Client</span>
+      <div class="kv-value">docker</div>
+      <p>The executable you run in your terminal. It translates your commands into API calls.</p>
+    </div>
+    <div class="kv">
+      <span class="kv-label">Daemon</span>
+      <div class="kv-value">dockerd</div>
+      <p>The background process that actually does the work: build, run, network, volumes.</p>
+    </div>
+    <div class="kv">
+      <span class="kv-label">Registry</span>
+      <div class="kv-value">Docker Hub & co</div>
+      <p>Remote library where images are published and downloaded from.</p>
+    </div>
+  </div>
 
   <!-- LIFECYCLE -->
-  <h3 id="cycle">Cycle de vie d'un conteneur</h3>
-  <p>Un conteneur n'a que cinq états possibles. Comprendre les transitions entre ces états élimine 90% des confusions de débutant — notamment la différence entre une image (modèle), un conteneur arrêté (instance gelée) et un conteneur actif (processus en cours).</p>
+  <h3 id="cycle" data-lang="fr">Cycle de vie d'un conteneur</h3>
+  <h3 data-lang="en">Container lifecycle</h3>
+  <p data-lang="fr">Un conteneur n'a que cinq états possibles. Comprendre les transitions entre ces états élimine 90% des confusions de débutant — notamment la différence entre une image (modèle), un conteneur arrêté (instance gelée) et un conteneur actif (processus en cours).</p>
+  <p data-lang="en">A container has only five possible states. Understanding the transitions between them removes 90% of beginner confusion — especially the difference between an image (template), a stopped container (frozen instance) and a running container (live process).</p>
 
   <figure class="diagram">
     <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cycle de vie">
@@ -944,12 +1144,15 @@ ls -la</code></pre>
       <text class="cmd cmd-mute" style="font-size:11px" x="240" y="220" text-anchor="middle">docker create</text>
       <text class="cmd cmd-mute" style="font-size:11px" x="400" y="220" text-anchor="middle">docker run = create + start</text>
     </svg>
-    <figcaption><strong>Schéma 2.</strong> Les cinq états d'un conteneur. La commande <code>docker run</code> regroupe en réalité <code>create</code> et <code>start</code>.</figcaption>
+    <figcaption data-lang="fr"><strong>Schéma 2.</strong> Les cinq états d'un conteneur. La commande <code>docker run</code> regroupe en réalité <code>create</code> et <code>start</code>.</figcaption>
+    <figcaption data-lang="en"><strong>Diagram 2.</strong> The five container states. The <code>docker run</code> command actually combines <code>create</code> and <code>start</code>.</figcaption>
   </figure>
 
   <!-- LAYERS -->
-  <h3 id="layers">Couches d'image (Union File System)</h3>
-  <p>Une image Docker n'est pas un fichier monolithique. C'est un <strong>empilement de couches</strong> en lecture seule, chaque instruction du Dockerfile (FROM, RUN, COPY...) produisant une couche. Lorsqu'un conteneur démarre, Docker ajoute par-dessus une <strong>couche fine en lecture-écriture</strong>. Toutes les modifications faites pendant l'exécution se trouvent dans cette couche éphémère.</p>
+  <h3 id="layers" data-lang="fr">Couches d'image (Union File System)</h3>
+  <h3 data-lang="en">Image layers (Union File System)</h3>
+  <p data-lang="fr">Une image Docker n'est pas un fichier monolithique. C'est un <strong>empilement de couches</strong> en lecture seule, chaque instruction du Dockerfile (FROM, RUN, COPY...) produisant une couche. Lorsqu'un conteneur démarre, Docker ajoute par-dessus une <strong>couche fine en lecture-écriture</strong>. Toutes les modifications faites pendant l'exécution se trouvent dans cette couche éphémère.</p>
+  <p data-lang="en">A Docker image isn't a monolithic file. It's a <strong>stack of read-only layers</strong>, each Dockerfile instruction (FROM, RUN, COPY…) producing a layer. When a container starts, Docker adds a <strong>thin read-write layer</strong> on top. All modifications made during execution land in this ephemeral layer.</p>
 
   <figure class="diagram">
     <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Couches d'image">
@@ -999,23 +1202,31 @@ ls -la</code></pre>
       <rect class="layer layer-rw" x="400" y="20" width="200" height="40"/>
       <text class="l-text" x="500" y="45" text-anchor="middle">writable layer</text>
 
-      <text class="annot" x="500" y="265" text-anchor="middle">supprimée à la destruction</text>
+      <text class="annot" x="500" y="265" text-anchor="middle" data-lang="fr">supprimée à la destruction</text>
+      <text class="annot" x="500" y="265" text-anchor="middle" data-lang="en">destroyed when container removed</text>
 
       <!-- Arrow between -->
       <path class="arrow-y" d="M 290 130 L 390 130" marker-end="url(#arrow)"/>
       <text class="annot" x="340" y="120" text-anchor="middle">docker run</text>
     </svg>
-    <figcaption><strong>Schéma 3.</strong> Le système de couches Union File System. Plusieurs conteneurs peuvent partager les mêmes couches en lecture seule, n'occupant que l'espace de leur couche d'écriture.</figcaption>
+    <figcaption data-lang="fr"><strong>Schéma 3.</strong> Le système de couches Union File System. Plusieurs conteneurs peuvent partager les mêmes couches en lecture seule, n'occupant que l'espace de leur couche d'écriture.</figcaption>
+    <figcaption data-lang="en"><strong>Diagram 3.</strong> The Union File System layer model. Multiple containers can share the same read-only layers, only consuming space for their writable layer.</figcaption>
   </figure>
 
-  <div class="callout">
+  <div class="callout" data-lang="fr">
     <span class="callout-label">Conséquence pratique</span>
     Toute donnée écrite dans un conteneur est <strong>perdue</strong> à sa destruction. Pour persister (logs, base de données, fichiers utilisateur), il faut utiliser un <strong>volume</strong> ou un <strong>bind mount</strong> — voir LAB 02.
   </div>
+  <div class="callout" data-lang="en">
+    <span class="callout-label">Practical consequence</span>
+    Any data written to a container is <strong>lost</strong> when it's destroyed. To persist (logs, databases, user files), use a <strong>volume</strong> or a <strong>bind mount</strong> — see LAB 02.
+  </div>
 
   <!-- NETWORKS -->
-  <h3 id="networks">Modes réseau</h3>
-  <p>Docker propose cinq pilotes réseau, chacun adapté à un cas d'usage précis. Le choix par défaut, <strong>bridge</strong>, convient à la majorité des situations en mono-machine. <strong>Host</strong> supprime l'isolation réseau pour gagner en performance. <strong>Overlay</strong> permet à des conteneurs sur des machines différentes de se voir comme s'ils étaient en local.</p>
+  <h3 id="networks" data-lang="fr">Modes réseau</h3>
+  <h3 data-lang="en">Network modes</h3>
+  <p data-lang="fr">Docker propose cinq pilotes réseau, chacun adapté à un cas d'usage précis. Le choix par défaut, <strong>bridge</strong>, convient à la majorité des situations en mono-machine. <strong>Host</strong> supprime l'isolation réseau pour gagner en performance. <strong>Overlay</strong> permet à des conteneurs sur des machines différentes de se voir comme s'ils étaient en local.</p>
+  <p data-lang="en">Docker offers five network drivers, each suited to a specific use case. The default, <strong>bridge</strong>, fits most single-machine situations. <strong>Host</strong> removes network isolation for performance. <strong>Overlay</strong> lets containers on different machines see each other as if they were local.</p>
 
   <figure class="diagram">
     <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Réseaux Docker">
@@ -1029,7 +1240,8 @@ ls -la</code></pre>
       </style>
 
       <!-- BRIDGE -->
-      <text class="net-title" x="120" y="25" text-anchor="middle">bridge (défaut)</text>
+      <text class="net-title" x="120" y="25" text-anchor="middle" data-lang="fr">bridge (défaut)</text>
+      <text class="net-title" x="120" y="25" text-anchor="middle" data-lang="en">bridge (default)</text>
       <rect class="net-host" x="20" y="40" width="200" height="160" rx="2"/>
       <rect class="net-bridge" x="50" y="100" width="140" height="20" rx="2"/>
       <text class="net-text" x="120" y="114" text-anchor="middle">docker0 bridge</text>
@@ -1046,9 +1258,12 @@ ls -la</code></pre>
       <rect class="net-host" x="270" y="40" width="200" height="160" rx="2"/>
       <rect class="net-c" x="320" y="100" width="100" height="80" rx="2"/>
       <text class="net-text" x="370" y="135" text-anchor="middle">container</text>
-      <text class="net-text" x="370" y="155" text-anchor="middle">utilise</text>
-      <text class="net-text" x="370" y="170" text-anchor="middle">le host direct</text>
-      <text class="net-text-dark" style="font-size:9px" x="370" y="60" text-anchor="middle">aucune isolation réseau</text>
+      <text class="net-text" x="370" y="155" text-anchor="middle" data-lang="fr">utilise</text>
+      <text class="net-text" x="370" y="155" text-anchor="middle" data-lang="en">uses</text>
+      <text class="net-text" x="370" y="170" text-anchor="middle" data-lang="fr">le host direct</text>
+      <text class="net-text" x="370" y="170" text-anchor="middle" data-lang="en">the host directly</text>
+      <text class="net-text-dark" style="font-size:9px" x="370" y="60" text-anchor="middle" data-lang="fr">aucune isolation réseau</text>
+      <text class="net-text-dark" style="font-size:9px" x="370" y="60" text-anchor="middle" data-lang="en">no network isolation</text>
 
       <!-- OVERLAY -->
       <text class="net-title" x="620" y="25" text-anchor="middle">overlay (multi-host)</text>
@@ -1064,21 +1279,28 @@ ls -la</code></pre>
       <text class="net-text-dark" style="font-size:10px;font-style:italic" x="620" y="160" text-anchor="middle">overlay tunnel</text>
       <text class="net-text-dark" style="font-size:9px" x="620" y="195" text-anchor="middle">Swarm / Kubernetes</text>
     </svg>
-    <figcaption><strong>Schéma 4.</strong> Trois pilotes réseau. <code>bridge</code> est le défaut local, <code>host</code> supprime l'isolation, <code>overlay</code> connecte plusieurs machines.</figcaption>
+    <figcaption data-lang="fr"><strong>Schéma 4.</strong> Trois pilotes réseau. <code>bridge</code> est le défaut local, <code>host</code> supprime l'isolation, <code>overlay</code> connecte plusieurs machines.</figcaption>
+    <figcaption data-lang="en"><strong>Diagram 4.</strong> Three network drivers. <code>bridge</code> is the local default, <code>host</code> removes isolation, <code>overlay</code> connects multiple machines.</figcaption>
   </figure>
 
-  <p class="pull">Comprendre l'image, le conteneur et le volume, c'est tenir 80% de Docker. Le reste n'est qu'orchestration et ergonomie.</p>
+  <p class="pull" data-lang="fr">Comprendre l'image, le conteneur et le volume, c'est tenir 80% de Docker. Le reste n'est qu'orchestration et ergonomie.</p>
+  <p class="pull" data-lang="en">Understand image, container and volume, and you've got 80% of Docker. The rest is just orchestration and ergonomics.</p>
 </section>
 
 <!-- ===== 4. PARCOURS ===== -->
 <section id="parcours">
-  <span class="section-num">§ 04 — Méthode</span>
-  <h2>Parcours d'apprentissage recommandé</h2>
-  <p class="lede">Les douze laboratoires du repository peuvent être abordés dans n'importe quel ordre, mais l'expérience montre qu'une progression réfléchie évite frustrations et oublis. Voici trois parcours selon votre point de départ.</p>
+  <span class="section-num" data-lang="fr">§ 04 — Méthode</span>
+  <span class="section-num" data-lang="en">§ 04 — Method</span>
+  <h2 data-lang="fr">Parcours d'apprentissage recommandé</h2>
+  <h2 data-lang="en">Recommended learning path</h2>
+  <p class="lede" data-lang="fr">Les douze laboratoires du repository peuvent être abordés dans n'importe quel ordre, mais l'expérience montre qu'une progression réfléchie évite frustrations et oublis. Voici trois parcours selon votre point de départ.</p>
+  <p class="lede" data-lang="en">The repository's twelve labs can be tackled in any order, but experience shows that a thoughtful progression avoids frustration and gaps. Here are three paths depending on your starting point.</p>
 
-  <h3>Parcours A · Découverte complète (recommandé)</h3>
-  <p>Pour qui n'a jamais touché Docker. Compter 8 à 12 heures réparties sur 2 à 3 semaines.</p>
-  <div class="table-wrap">
+  <h3 data-lang="fr">Parcours A · Découverte complète (recommandé)</h3>
+  <h3 data-lang="en">Path A · Full discovery (recommended)</h3>
+  <p data-lang="fr">Pour qui n'a jamais touché Docker. Compter 8 à 12 heures réparties sur 2 à 3 semaines.</p>
+  <p data-lang="en">For someone who has never touched Docker. Plan for 8 to 12 hours spread across 2 to 3 weeks.</p>
+  <div class="table-wrap" data-lang="fr">
   <table>
     <thead><tr><th>Ordre</th><th>Lab</th><th>Pourquoi à ce moment</th><th>Durée</th></tr></thead>
     <tbody>
@@ -1097,27 +1319,62 @@ ls -la</code></pre>
     </tbody>
   </table>
   </div>
+  <div class="table-wrap" data-lang="en">
+  <table>
+    <thead><tr><th>Order</th><th>Lab</th><th>Why at this point</th><th>Duration</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>LAB 01 — First container</td><td>Lay the basics: build, run, exec, logs, rm</td><td>45 min</td></tr>
+      <tr><td>2</td><td>LAB 06 — Transfers</td><td>Debug, copy files between container and host</td><td>20 min</td></tr>
+      <tr><td>3</td><td>LAB 02 — Volumes</td><td>Persist data (otherwise everything is lost)</td><td>45 min</td></tr>
+      <tr><td>4</td><td>LAB 12 — Healthchecks</td><td>Production practice often forgotten</td><td>30 min</td></tr>
+      <tr><td>5</td><td>LAB 03 — Compose</td><td>Orchestrate multiple services</td><td>1 h</td></tr>
+      <tr><td>6</td><td>LAB 09 — Configuration</td><td>Master the daemon, proxy, registry mirrors</td><td>30 min</td></tr>
+      <tr><td>7</td><td>LAB 05 — Registry</td><td>Publish your own images</td><td>45 min</td></tr>
+      <tr><td>8</td><td>LAB 07 — Linux build</td><td>Multi-stage build (key concept)</td><td>45 min</td></tr>
+      <tr><td>9</td><td>LAB 11 — Security</td><td>Distroless, non-root, scan</td><td>1 h</td></tr>
+      <tr><td>10</td><td>LAB 10 — Multi-arch</td><td>ARM/AMD64 compatibility</td><td>45 min</td></tr>
+      <tr><td>11</td><td>LAB 04 — Swarm <span class="tag legacy">legacy</span></td><td>Cultural read, gateway to K8s</td><td>30 min</td></tr>
+      <tr><td>12</td><td>LAB 08 — Windows build</td><td>Optional, Windows niche only</td><td>30 min</td></tr>
+    </tbody>
+  </table>
+  </div>
 
-  <h3>Parcours B · Express (4 heures, l'essentiel)</h3>
-  <p>Pour qui veut comprendre Docker rapidement avant un projet ou un entretien.</p>
+  <h3 data-lang="fr">Parcours B · Express (4 heures, l'essentiel)</h3>
+  <h3 data-lang="en">Path B · Express (4 hours, the essentials)</h3>
+  <p data-lang="fr">Pour qui veut comprendre Docker rapidement avant un projet ou un entretien.</p>
+  <p data-lang="en">For someone who wants to understand Docker quickly before a project or interview.</p>
   <ul>
     <li>LAB 01 → LAB 02 → LAB 03 → LAB 11 → LAB 12</li>
   </ul>
 
-  <h3>Parcours C · Préparation Kubernetes / CKA</h3>
-  <p>Pour qui prépare une certification CKA, CKAD ou CKS.</p>
-  <ul>
+  <h3 data-lang="fr">Parcours C · Préparation Kubernetes / CKA</h3>
+  <h3 data-lang="en">Path C · Kubernetes / CKA preparation</h3>
+  <p data-lang="fr">Pour qui prépare une certification CKA, CKAD ou CKS.</p>
+  <p data-lang="en">For someone preparing for a CKA, CKAD or CKS certification.</p>
+  <ul data-lang="fr">
     <li>LAB 01 → LAB 02 → LAB 11 → LAB 12 → §7 (pont vers Kubernetes)</li>
     <li>Sauter LAB 04 (Swarm est hors syllabus CKA)</li>
   </ul>
+  <ul data-lang="en">
+    <li>LAB 01 → LAB 02 → LAB 11 → LAB 12 → §7 (bridge to Kubernetes)</li>
+    <li>Skip LAB 04 (Swarm is out of the CKA syllabus)</li>
+  </ul>
 
-  <h3>Méthode de session efficace</h3>
-  <p>Une session de <strong>90 minutes</strong> bien structurée vaut mieux que trois heures dispersées :</p>
-  <ul>
+  <h3 data-lang="fr">Méthode de session efficace</h3>
+  <h3 data-lang="en">Effective session method</h3>
+  <p data-lang="fr">Une session de <strong>90 minutes</strong> bien structurée vaut mieux que trois heures dispersées :</p>
+  <p data-lang="en">A well-structured <strong>90-minute</strong> session beats three scattered hours:</p>
+  <ul data-lang="fr">
     <li><strong>10 min</strong> — relire la section théorique correspondante du README.</li>
     <li><strong>50 min</strong> — exécuter le lab, puis introduire des variations volontaires (changer une image, casser un truc, réparer).</li>
     <li><strong>15 min</strong> — prendre des notes personnelles (un fichier <code>notes/LABxx.md</code> dans votre fork).</li>
     <li><strong>15 min</strong> — formuler une question ouverte qui reste en suspens. Ouvrir une issue dans votre fork pour la traiter plus tard.</li>
+  </ul>
+  <ul data-lang="en">
+    <li><strong>10 min</strong> — re-read the corresponding theory section in the README.</li>
+    <li><strong>50 min</strong> — run the lab, then introduce deliberate variations (change an image, break something, fix it).</li>
+    <li><strong>15 min</strong> — take personal notes (a <code>notes/LABxx.md</code> file in your fork).</li>
+    <li><strong>15 min</strong> — formulate one open question that remains unanswered. Open an issue in your fork to address it later.</li>
   </ul>
 </section>
 
@@ -1125,34 +1382,52 @@ ls -la</code></pre>
 <!-- LABS -->
 <!-- ============================================ -->
 <section id="labs">
-  <span class="section-num">§ 05 — Pratique</span>
-  <h2>Les douze laboratoires</h2>
-  <p class="lede">Chaque lab est conçu pour être autonome. Faites-les un par un, exécutez chaque commande, et ne passez à la suite que lorsque le critère de validation est rempli.</p>
+  <span class="section-num" data-lang="fr">§ 05 — Pratique</span>
+  <span class="section-num" data-lang="en">§ 05 — Practice</span>
+  <h2 data-lang="fr">Les douze laboratoires</h2>
+  <h2 data-lang="en">The twelve labs</h2>
+  <p class="lede" data-lang="fr">Chaque lab est conçu pour être autonome. Faites-les un par un, exécutez chaque commande, et ne passez à la suite que lorsque le critère de validation est rempli.</p>
+  <p class="lede" data-lang="en">Each lab is designed to be self-contained. Do them one by one, run every command, and only move on once the validation criterion is met.</p>
 
   <!-- ===== LAB 01 ===== -->
   <article class="lab" id="lab01">
     <div class="lab-header">
       <span class="lab-num">01</span>
-      <h3 class="lab-title">Premier conteneur — Image, build, run</h3>
+      <h3 class="lab-title" data-lang="fr">Premier conteneur — Image, build, run</h3>
+      <h3 class="lab-title" data-lang="en">First container — Image, build, run</h3>
     </div>
-    <div class="lab-meta">
+    <div class="lab-meta" data-lang="fr">
       <span><strong>Durée</strong> 45 min</span>
       <span><strong>Niveau</strong> Débutant</span>
       <span><strong>Source</strong> LAB01-FirstImageFirstContainer.md</span>
     </div>
+    <div class="lab-meta" data-lang="en">
+      <span><strong>Duration</strong> 45 min</span>
+      <span><strong>Level</strong> Beginner</span>
+      <span><strong>Source</strong> LAB01-FirstImageFirstContainer.md</span>
+    </div>
 
-    <h4>Objectif</h4>
-    <p>Construire votre première image Docker depuis un Dockerfile, lancer un conteneur, comprendre le cycle <code>build → run → exec → stop → rm</code>.</p>
+    <h4 data-lang="fr">Objectif</h4>
+    <h4 data-lang="en">Goal</h4>
+    <p data-lang="fr">Construire votre première image Docker depuis un Dockerfile, lancer un conteneur, comprendre le cycle <code>build → run → exec → stop → rm</code>.</p>
+    <p data-lang="en">Build your first Docker image from a Dockerfile, run a container, understand the <code>build → run → exec → stop → rm</code> cycle.</p>
 
-    <h4>Concepts couverts</h4>
-    <ul>
+    <h4 data-lang="fr">Concepts couverts</h4>
+    <h4 data-lang="en">Concepts covered</h4>
+    <ul data-lang="fr">
       <li>Anatomie d'un Dockerfile (<code>FROM</code>, <code>WORKDIR</code>, <code>COPY</code>, <code>RUN</code>, <code>CMD</code>)</li>
       <li>Différence entre <code>image build</code> et <code>container run</code></li>
       <li>Inspection d'un conteneur en cours d'exécution</li>
     </ul>
+    <ul data-lang="en">
+      <li>Anatomy of a Dockerfile (<code>FROM</code>, <code>WORKDIR</code>, <code>COPY</code>, <code>RUN</code>, <code>CMD</code>)</li>
+      <li>Difference between <code>image build</code> and <code>container run</code></li>
+      <li>Inspecting a running container</li>
+    </ul>
 
-    <h4>Commandes essentielles</h4>
-    <pre data-lang="bash"><code><span class="tok-c"># 1. Construire l'image depuis un Dockerfile</span>
+    <h4 data-lang="fr">Commandes essentielles</h4>
+    <h4 data-lang="en">Essential commands</h4>
+    <div data-lang="fr"><pre data-lang="bash"><code><span class="tok-c"># 1. Construire l'image depuis un Dockerfile</span>
 docker image build -t hello .
 
 <span class="tok-c"># 2. Lancer un conteneur</span>
@@ -1165,18 +1440,42 @@ docker container exec -it c1 sh
 
 <span class="tok-c"># 4. Nettoyer</span>
 docker container rm -f c1
-docker image rm hello</code></pre>
+docker image rm hello</code></pre></div>
+    <div data-lang="en"><pre data-lang="bash"><code><span class="tok-c"># 1. Build the image from a Dockerfile</span>
+docker image build -t hello .
 
-    <h4>Pièges classiques</h4>
-    <ul>
+<span class="tok-c"># 2. Run a container</span>
+docker container run -d --name c1 hello
+
+<span class="tok-c"># 3. Inspect</span>
+docker container ls
+docker container logs c1
+docker container exec -it c1 sh
+
+<span class="tok-c"># 4. Clean up</span>
+docker container rm -f c1
+docker image rm hello</code></pre></div>
+
+    <h4 data-lang="fr">Pièges classiques</h4>
+    <h4 data-lang="en">Common pitfalls</h4>
+    <ul data-lang="fr">
       <li>Le fichier doit s'appeler <strong>exactement</strong> <code>Dockerfile</code>, sans extension.</li>
       <li>Confusion <code>CMD</code> vs <code>ENTRYPOINT</code> : <code>CMD</code> est surchargeable au <code>run</code>, <code>ENTRYPOINT</code> non.</li>
       <li><code>docker run</code> est un raccourci de <code>create + start</code>. Comprendre cette décomposition aide pour le débogage.</li>
     </ul>
+    <ul data-lang="en">
+      <li>The file must be named <strong>exactly</strong> <code>Dockerfile</code>, no extension.</li>
+      <li><code>CMD</code> vs <code>ENTRYPOINT</code> confusion: <code>CMD</code> can be overridden at <code>run</code>, <code>ENTRYPOINT</code> cannot.</li>
+      <li><code>docker run</code> is a shortcut for <code>create + start</code>. Knowing this decomposition helps when debugging.</li>
+    </ul>
 
-    <div class="callout tip">
+    <div class="callout tip" data-lang="fr">
       <span class="callout-label">Validation</span>
       Vous pouvez décrire en trois phrases ce qui se passe entre <code>docker build</code> et l'apparition d'un conteneur en état <em>Running</em>. Vous savez expliquer pourquoi <code>docker run hello</code> et <code>docker create hello + docker start</code> donnent le même résultat.
+    </div>
+    <div class="callout tip" data-lang="en">
+      <span class="callout-label">Validation</span>
+      You can describe in three sentences what happens between <code>docker build</code> and a container appearing in the <em>Running</em> state. You can explain why <code>docker run hello</code> and <code>docker create hello + docker start</code> produce the same result.
     </div>
   </article>
 
@@ -1184,16 +1483,24 @@ docker image rm hello</code></pre>
   <article class="lab" id="lab02">
     <div class="lab-header">
       <span class="lab-num">02</span>
-      <h3 class="lab-title">Volumes et bind mounts — Persister la donnée</h3>
+      <h3 class="lab-title" data-lang="fr">Volumes et bind mounts — Persister la donnée</h3>
+      <h3 class="lab-title" data-lang="en">Volumes and bind mounts — Persist data</h3>
     </div>
-    <div class="lab-meta">
+    <div class="lab-meta" data-lang="fr">
       <span><strong>Durée</strong> 45 min</span>
       <span><strong>Niveau</strong> Débutant</span>
       <span><strong>Source</strong> LAB02-DockerVolume.md</span>
     </div>
+    <div class="lab-meta" data-lang="en">
+      <span><strong>Duration</strong> 45 min</span>
+      <span><strong>Level</strong> Beginner</span>
+      <span><strong>Source</strong> LAB02-DockerVolume.md</span>
+    </div>
 
-    <h4>Objectif</h4>
-    <p>Persister la donnée hors du cycle de vie du conteneur. Sans volume, toute écriture est perdue à la destruction.</p>
+    <h4 data-lang="fr">Objectif</h4>
+    <h4 data-lang="en">Goal</h4>
+    <p data-lang="fr">Persister la donnée hors du cycle de vie du conteneur. Sans volume, toute écriture est perdue à la destruction.</p>
+    <p data-lang="en">Persist data outside the container's lifecycle. Without a volume, every write is lost on destruction.</p>
 
     <figure class="diagram">
       <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Volumes vs bind mounts">
@@ -1209,7 +1516,8 @@ docker image rm hello</code></pre>
         </style>
 
         <!-- Volume -->
-        <text class="v-title" x="170" y="25" text-anchor="middle">VOLUME (géré par Docker)</text>
+        <text class="v-title" x="170" y="25" text-anchor="middle" data-lang="fr">VOLUME (géré par Docker)</text>
+        <text class="v-title" x="170" y="25" text-anchor="middle" data-lang="en">VOLUME (managed by Docker)</text>
         <rect class="v-host" x="40" y="40" width="260" height="160" rx="2"/>
         <text class="v-annot" x="170" y="60" text-anchor="middle">/var/lib/docker/volumes/</text>
         <rect class="v-c" x="60" y="80" width="80" height="50"/>
@@ -1218,11 +1526,14 @@ docker image rm hello</code></pre>
         <text class="v-text" x="240" y="110" text-anchor="middle">volume</text>
         <line x1="140" y1="105" x2="200" y2="105" stroke="#1a1612" stroke-width="1.5"/>
         <text class="v-annot" x="170" y="100" text-anchor="middle">mount</text>
-        <text class="v-annot" x="170" y="155" text-anchor="middle">portable, recommandé en prod</text>
-        <text class="v-annot" x="170" y="170" text-anchor="middle">backup, migration faciles</text>
+        <text class="v-annot" x="170" y="155" text-anchor="middle" data-lang="fr">portable, recommandé en prod</text>
+        <text class="v-annot" x="170" y="155" text-anchor="middle" data-lang="en">portable, recommended in prod</text>
+        <text class="v-annot" x="170" y="170" text-anchor="middle" data-lang="fr">backup, migration faciles</text>
+        <text class="v-annot" x="170" y="170" text-anchor="middle" data-lang="en">easy backup, migration</text>
 
         <!-- Bind mount -->
-        <text class="v-title" x="530" y="25" text-anchor="middle">BIND MOUNT (chemin host)</text>
+        <text class="v-title" x="530" y="25" text-anchor="middle" data-lang="fr">BIND MOUNT (chemin host)</text>
+        <text class="v-title" x="530" y="25" text-anchor="middle" data-lang="en">BIND MOUNT (host path)</text>
         <rect class="v-host" x="400" y="40" width="260" height="160" rx="2"/>
         <text class="v-annot" x="530" y="60" text-anchor="middle">/home/user/projet/</text>
         <rect class="v-c" x="420" y="80" width="80" height="50"/>
@@ -1231,14 +1542,18 @@ docker image rm hello</code></pre>
         <text class="v-text-d" x="600" y="110" text-anchor="middle">/home/dev</text>
         <line x1="500" y1="105" x2="560" y2="105" stroke="#1a1612" stroke-width="1.5"/>
         <text class="v-annot" x="530" y="100" text-anchor="middle">mount</text>
-        <text class="v-annot" x="530" y="155" text-anchor="middle">utile en dev (hot reload)</text>
-        <text class="v-annot" x="530" y="170" text-anchor="middle">couplage host, pièges en prod</text>
+        <text class="v-annot" x="530" y="155" text-anchor="middle" data-lang="fr">utile en dev (hot reload)</text>
+        <text class="v-annot" x="530" y="155" text-anchor="middle" data-lang="en">useful in dev (hot reload)</text>
+        <text class="v-annot" x="530" y="170" text-anchor="middle" data-lang="fr">couplage host, pièges en prod</text>
+        <text class="v-annot" x="530" y="170" text-anchor="middle" data-lang="en">host coupling, pitfalls in prod</text>
       </svg>
-      <figcaption><strong>Schéma 5.</strong> Volume nommé vs bind mount. Le volume est portable et géré par Docker ; le bind mount couple un chemin précis du système hôte.</figcaption>
+      <figcaption data-lang="fr"><strong>Schéma 5.</strong> Volume nommé vs bind mount. Le volume est portable et géré par Docker ; le bind mount couple un chemin précis du système hôte.</figcaption>
+      <figcaption data-lang="en"><strong>Diagram 5.</strong> Named volume vs bind mount. The volume is portable and managed by Docker; the bind mount couples to a specific host path.</figcaption>
     </figure>
 
-    <h4>Commandes essentielles</h4>
-    <pre data-lang="bash"><code><span class="tok-c"># Volume nommé</span>
+    <h4 data-lang="fr">Commandes essentielles</h4>
+    <h4 data-lang="en">Essential commands</h4>
+    <div data-lang="fr"><pre data-lang="bash"><code><span class="tok-c"># Volume nommé</span>
 docker volume create data
 docker run -v data:/app alpine sh -c <span class="tok-s">"echo hello &gt; /app/file.txt"</span>
 docker run -v data:/app alpine cat /app/file.txt
@@ -1249,10 +1564,23 @@ docker run -v $(pwd)/local:/app alpine ls /app
 
 <span class="tok-c"># Inspection</span>
 docker volume ls
-docker volume inspect data</code></pre>
+docker volume inspect data</code></pre></div>
+    <div data-lang="en"><pre data-lang="bash"><code><span class="tok-c"># Named volume</span>
+docker volume create data
+docker run -v data:/app alpine sh -c <span class="tok-s">"echo hello &gt; /app/file.txt"</span>
+docker run -v data:/app alpine cat /app/file.txt
+<span class="tok-c"># =&gt; hello (data persisted)</span>
 
-    <h4>Quand utiliser quoi</h4>
-    <div class="table-wrap">
+<span class="tok-c"># Bind mount</span>
+docker run -v $(pwd)/local:/app alpine ls /app
+
+<span class="tok-c"># Inspection</span>
+docker volume ls
+docker volume inspect data</code></pre></div>
+
+    <h4 data-lang="fr">Quand utiliser quoi</h4>
+    <h4 data-lang="en">When to use what</h4>
+    <div class="table-wrap" data-lang="fr">
     <table>
       <thead><tr><th>Type</th><th>Cas d'usage</th><th>Exemple</th></tr></thead>
       <tbody>
@@ -1262,10 +1590,24 @@ docker volume inspect data</code></pre>
       </tbody>
     </table>
     </div>
+    <div class="table-wrap" data-lang="en">
+    <table>
+      <thead><tr><th>Type</th><th>Use case</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Named volume</strong></td><td>Production, application data</td><td>MySQL database</td></tr>
+        <tr><td><strong>Bind mount</strong></td><td>Development, hot reload</td><td>Source code of a web app in dev</td></tr>
+        <tr><td><strong>tmpfs</strong></td><td>Ephemeral secrets, cache</td><td>Temporary auth tokens</td></tr>
+      </tbody>
+    </table>
+    </div>
 
-    <div class="callout tip">
+    <div class="callout tip" data-lang="fr">
       <span class="callout-label">Validation</span>
       Vous savez expliquer la différence entre volume nommé, bind mount et tmpfs. Vous comprenez pourquoi un bind mount peut se comporter différemment sur Linux et Windows/WSL2 (différences de système de fichiers et de permissions).
+    </div>
+    <div class="callout tip" data-lang="en">
+      <span class="callout-label">Validation</span>
+      You can explain the difference between named volume, bind mount and tmpfs. You understand why a bind mount may behave differently on Linux versus Windows/WSL2 (filesystem and permission differences).
     </div>
   </article>
 
@@ -1273,18 +1615,27 @@ docker volume inspect data</code></pre>
   <article class="lab" id="lab03">
     <div class="lab-header">
       <span class="lab-num">03</span>
-      <h3 class="lab-title">Docker Compose v2 — WordPress et MySQL</h3>
+      <h3 class="lab-title" data-lang="fr">Docker Compose v2 — WordPress et MySQL</h3>
+      <h3 class="lab-title" data-lang="en">Docker Compose v2 — WordPress and MySQL</h3>
     </div>
-    <div class="lab-meta">
+    <div class="lab-meta" data-lang="fr">
       <span><strong>Durée</strong> 1 h</span>
       <span><strong>Niveau</strong> Débutant</span>
       <span><strong>Source</strong> LAB03-DockerCompose.md</span>
     </div>
+    <div class="lab-meta" data-lang="en">
+      <span><strong>Duration</strong> 1 h</span>
+      <span><strong>Level</strong> Beginner</span>
+      <span><strong>Source</strong> LAB03-DockerCompose.md</span>
+    </div>
 
-    <h4>Objectif</h4>
-    <p>Orchestrer plusieurs conteneurs avec dépendances et réseau dédié, via un fichier <code>compose.yml</code> déclaratif. C'est le passage du jouet (un conteneur) au réel (une application complète).</p>
+    <h4 data-lang="fr">Objectif</h4>
+    <h4 data-lang="en">Goal</h4>
+    <p data-lang="fr">Orchestrer plusieurs conteneurs avec dépendances et réseau dédié, via un fichier <code>compose.yml</code> déclaratif. C'est le passage du jouet (un conteneur) au réel (une application complète).</p>
+    <p data-lang="en">Orchestrate multiple containers with dependencies and a dedicated network via a declarative <code>compose.yml</code> file. This is the move from toy (one container) to real (a full application).</p>
 
-    <h4>Compose en une image</h4>
+    <h4 data-lang="fr">Compose en une image</h4>
+    <h4 data-lang="en">Compose in one picture</h4>
     <figure class="diagram">
       <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" role="img">
         <style>
@@ -1313,11 +1664,13 @@ docker volume inspect data</code></pre>
         <text class="cmp-text cmp-text-l" x="640" y="115" text-anchor="middle" style="font-size:9px">volume</text>
         <line x1="480" y1="100" x2="600" y2="100" stroke="#1a1612"/>
       </svg>
-      <figcaption><strong>Schéma 6.</strong> Une stack Compose typique : services connectés à un même réseau, volume dédié pour la persistance, dépendance santé entre services.</figcaption>
+      <figcaption data-lang="fr"><strong>Schéma 6.</strong> Une stack Compose typique : services connectés à un même réseau, volume dédié pour la persistance, dépendance santé entre services.</figcaption>
+      <figcaption data-lang="en"><strong>Diagram 6.</strong> A typical Compose stack: services connected to a shared network, dedicated volume for persistence, health-based dependency between services.</figcaption>
     </figure>
 
-    <h4>Fichier compose.yml moderne (2026)</h4>
-    <pre data-lang="yaml"><code><span class="tok-c"># Pas de "version:" — obsolète en Compose v2</span>
+    <h4 data-lang="fr">Fichier compose.yml moderne (2026)</h4>
+    <h4 data-lang="en">Modern compose.yml (2026)</h4>
+    <div data-lang="fr"><pre data-lang="yaml"><code><span class="tok-c"># Pas de "version:" — obsolète en Compose v2</span>
 <span class="tok-k">services</span>:
   <span class="tok-k">db</span>:
     <span class="tok-k">image</span>: mysql:8.0
@@ -1344,26 +1697,71 @@ docker volume inspect data</code></pre>
       WORDPRESS_DB_PASSWORD: secret
 
 <span class="tok-k">volumes</span>:
-  <span class="tok-k">mydata</span>:</code></pre>
+  <span class="tok-k">mydata</span>:</code></pre></div>
+    <div data-lang="en"><pre data-lang="yaml"><code><span class="tok-c"># No "version:" — obsolete in Compose v2</span>
+<span class="tok-k">services</span>:
+  <span class="tok-k">db</span>:
+    <span class="tok-k">image</span>: mysql:8.0
+    <span class="tok-k">restart</span>: always
+    <span class="tok-k">environment</span>:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: wordpress
+    <span class="tok-k">volumes</span>:
+      - mydata:/var/lib/mysql
+    <span class="tok-k">healthcheck</span>:
+      <span class="tok-k">test</span>: [<span class="tok-s">"CMD"</span>, <span class="tok-s">"mysqladmin"</span>, <span class="tok-s">"ping"</span>, <span class="tok-s">"-h"</span>, <span class="tok-s">"localhost"</span>]
+      <span class="tok-k">interval</span>: 10s
+      <span class="tok-k">retries</span>: 5
 
-    <h4>Commandes essentielles</h4>
-    <pre data-lang="bash"><code>docker compose up -d         <span class="tok-c"># lancer en arrière-plan</span>
+  <span class="tok-k">wordpress</span>:
+    <span class="tok-k">image</span>: wordpress:latest
+    <span class="tok-k">depends_on</span>:
+      <span class="tok-k">db</span>:
+        <span class="tok-k">condition</span>: service_healthy
+    <span class="tok-k">ports</span>:
+      - <span class="tok-s">"8080:80"</span>
+    <span class="tok-k">environment</span>:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_PASSWORD: secret
+
+<span class="tok-k">volumes</span>:
+  <span class="tok-k">mydata</span>:</code></pre></div>
+
+    <h4 data-lang="fr">Commandes essentielles</h4>
+    <h4 data-lang="en">Essential commands</h4>
+    <div data-lang="fr"><pre data-lang="bash"><code>docker compose up -d         <span class="tok-c"># lancer en arrière-plan</span>
 docker compose ps            <span class="tok-c"># lister</span>
 docker compose logs -f       <span class="tok-c"># suivre les logs</span>
 docker compose down          <span class="tok-c"># arrêter</span>
-docker compose down -v       <span class="tok-c"># arrêter + supprimer volumes</span></code></pre>
+docker compose down -v       <span class="tok-c"># arrêter + supprimer volumes</span></code></pre></div>
+    <div data-lang="en"><pre data-lang="bash"><code>docker compose up -d         <span class="tok-c"># launch in background</span>
+docker compose ps            <span class="tok-c"># list</span>
+docker compose logs -f       <span class="tok-c"># follow logs</span>
+docker compose down          <span class="tok-c"># stop</span>
+docker compose down -v       <span class="tok-c"># stop + remove volumes</span></code></pre></div>
 
-    <h4>Pièges classiques</h4>
-    <ul>
+    <h4 data-lang="fr">Pièges classiques</h4>
+    <h4 data-lang="en">Common pitfalls</h4>
+    <ul data-lang="fr">
       <li>Le champ <code>version:</code> est <strong>obsolète</strong> en Compose v2. Commencer directement par <code>services:</code>.</li>
       <li><code>docker-compose</code> (avec tiret) = v1 dépréciée. Utiliser <code>docker compose</code> (avec espace).</li>
       <li><code>depends_on</code> sans <code>condition</code> ne garantit que le démarrage, pas que le service est <em>prêt</em>. Toujours coupler à un healthcheck pour les bases de données.</li>
       <li>Ne jamais commit un <code>compose.yml</code> avec des mots de passe en clair. Utiliser un fichier <code>.env</code> ignoré par Git.</li>
     </ul>
+    <ul data-lang="en">
+      <li>The <code>version:</code> field is <strong>obsolete</strong> in Compose v2. Start directly with <code>services:</code>.</li>
+      <li><code>docker-compose</code> (with dash) = deprecated v1. Use <code>docker compose</code> (with space).</li>
+      <li><code>depends_on</code> without <code>condition</code> only guarantees startup order, not that the service is <em>ready</em>. Always pair with a healthcheck for databases.</li>
+      <li>Never commit a <code>compose.yml</code> with plaintext passwords. Use a <code>.env</code> file ignored by Git.</li>
+    </ul>
 
-    <div class="callout tip">
+    <div class="callout tip" data-lang="fr">
       <span class="callout-label">Validation</span>
       Vous écrivez de zéro un <code>compose.yml</code> à 2 services avec healthcheck, démarrage ordonné et volume nommé, sans copier l'exemple.
+    </div>
+    <div class="callout tip" data-lang="en">
+      <span class="callout-label">Validation</span>
+      You write a 2-service <code>compose.yml</code> from scratch with healthcheck, ordered startup and a named volume, without copying the example.
     </div>
   </article>
 
@@ -1371,23 +1769,36 @@ docker compose down -v       <span class="tok-c"># arrêter + supprimer volumes<
   <article class="lab" id="lab04">
     <div class="lab-header">
       <span class="lab-num">04</span>
-      <h3 class="lab-title">Docker Swarm — Stack et services <span class="tag legacy">legacy</span></h3>
+      <h3 class="lab-title" data-lang="fr">Docker Swarm — Stack et services <span class="tag legacy">legacy</span></h3>
+      <h3 class="lab-title" data-lang="en">Docker Swarm — Stack and services <span class="tag legacy">legacy</span></h3>
     </div>
-    <div class="lab-meta">
+    <div class="lab-meta" data-lang="fr">
       <span><strong>Durée</strong> 30 min (lecture)</span>
       <span><strong>Niveau</strong> Intermédiaire</span>
       <span><strong>Source</strong> LAB04-DockerStackService.md</span>
     </div>
+    <div class="lab-meta" data-lang="en">
+      <span><strong>Duration</strong> 30 min (reading)</span>
+      <span><strong>Level</strong> Intermediate</span>
+      <span><strong>Source</strong> LAB04-DockerStackService.md</span>
+    </div>
 
-    <h4>Statut</h4>
-    <div class="callout warn">
+    <h4 data-lang="fr">Statut</h4>
+    <h4 data-lang="en">Status</h4>
+    <div class="callout warn" data-lang="fr">
       <span class="callout-label">Note</span>
       Docker Swarm est en <strong>maintenance</strong> depuis 2020. L'industrie a massivement adopté Kubernetes pour l'orchestration en production. Ce lab garde une valeur pédagogique pour comprendre les concepts d'orchestration, mais ne pas l'utiliser pour de nouveaux projets.
     </div>
+    <div class="callout warn" data-lang="en">
+      <span class="callout-label">Note</span>
+      Docker Swarm has been in <strong>maintenance mode</strong> since 2020. The industry massively adopted Kubernetes for production orchestration. This lab retains pedagogical value for understanding orchestration concepts, but should not be used for new projects.
+    </div>
 
-    <h4>Concepts qui transposent vers Kubernetes</h4>
-    <p>Le vocabulaire Swarm prépare directement à Kubernetes. Pour chaque commande, son équivalent K8s :</p>
-    <div class="table-wrap">
+    <h4 data-lang="fr">Concepts qui transposent vers Kubernetes</h4>
+    <h4 data-lang="en">Concepts that transpose to Kubernetes</h4>
+    <p data-lang="fr">Le vocabulaire Swarm prépare directement à Kubernetes. Pour chaque commande, son équivalent K8s :</p>
+    <p data-lang="en">The Swarm vocabulary directly prepares for Kubernetes. For each command, its K8s equivalent:</p>
+    <div class="table-wrap" data-lang="fr">
     <table>
       <thead><tr><th>Swarm</th><th>Kubernetes</th><th>Concept</th></tr></thead>
       <tbody>
@@ -1400,8 +1811,22 @@ docker compose down -v       <span class="tok-c"># arrêter + supprimer volumes<
       </tbody>
     </table>
     </div>
+    <div class="table-wrap" data-lang="en">
+    <table>
+      <thead><tr><th>Swarm</th><th>Kubernetes</th><th>Concept</th></tr></thead>
+      <tbody>
+        <tr><td><code>service create</code></td><td><code>Deployment</code> + <code>Service</code></td><td>Replicated workload</td></tr>
+        <tr><td><code>service scale</code></td><td><code>kubectl scale deployment</code></td><td>Scaling</td></tr>
+        <tr><td><code>service update --image</code></td><td><code>kubectl set image</code></td><td>Rolling update</td></tr>
+        <tr><td><code>service rollback</code></td><td><code>kubectl rollout undo</code></td><td>Rollback</td></tr>
+        <tr><td><code>stack</code></td><td>Helm chart</td><td>Multi-service packaging</td></tr>
+        <tr><td><code>overlay</code> network</td><td>CNI plugin</td><td>Multi-host network</td></tr>
+      </tbody>
+    </table>
+    </div>
 
-    <h4>Si vous voulez quand même tester</h4>
+    <h4 data-lang="fr">Si vous voulez quand même tester</h4>
+    <h4 data-lang="en">If you want to try it anyway</h4>
     <pre data-lang="bash"><code>docker swarm init
 docker service create --name web --replicas 3 -p 8080:80 nginx
 docker service ls
@@ -1415,28 +1840,45 @@ docker swarm leave --force</code></pre>
   <article class="lab" id="lab05">
     <div class="lab-header">
       <span class="lab-num">05</span>
-      <h3 class="lab-title">Registry local — Publier ses images</h3>
+      <h3 class="lab-title" data-lang="fr">Registry local — Publier ses images</h3>
+      <h3 class="lab-title" data-lang="en">Local registry — Publish your images</h3>
     </div>
-    <div class="lab-meta">
+    <div class="lab-meta" data-lang="fr">
       <span><strong>Durée</strong> 45 min</span>
       <span><strong>Niveau</strong> Intermédiaire</span>
       <span><strong>Source</strong> LAB05-DockerLocalRegistry.md</span>
     </div>
+    <div class="lab-meta" data-lang="en">
+      <span><strong>Duration</strong> 45 min</span>
+      <span><strong>Level</strong> Intermediate</span>
+      <span><strong>Source</strong> LAB05-DockerLocalRegistry.md</span>
+    </div>
 
-    <h4>Objectif</h4>
-    <p>Faire tourner votre propre registry, tagger une image, la pousser, la récupérer. Comprendre la chaîne <code>build → tag → push → pull</code>.</p>
+    <h4 data-lang="fr">Objectif</h4>
+    <h4 data-lang="en">Goal</h4>
+    <p data-lang="fr">Faire tourner votre propre registry, tagger une image, la pousser, la récupérer. Comprendre la chaîne <code>build → tag → push → pull</code>.</p>
+    <p data-lang="en">Run your own registry, tag an image, push it, pull it. Understand the <code>build → tag → push → pull</code> chain.</p>
 
-    <h4>Vocabulaire à maîtriser</h4>
-    <ul>
+    <h4 data-lang="fr">Vocabulaire à maîtriser</h4>
+    <h4 data-lang="en">Vocabulary to master</h4>
+    <ul data-lang="fr">
       <li><strong>Repository</strong> : un nom (ex. <code>nginx</code>) qui regroupe plusieurs versions.</li>
       <li><strong>Image</strong> : une version spécifique dans un repository.</li>
       <li><strong>Tag</strong> : un alias humain (<code>:1.25</code>, <code>:latest</code>).</li>
       <li><strong>Digest</strong> : empreinte SHA-256 immuable (<code>@sha256:abc...</code>).</li>
       <li><strong>Manifest</strong> : description JSON d'une image (couches, plateforme).</li>
     </ul>
+    <ul data-lang="en">
+      <li><strong>Repository</strong>: a name (e.g. <code>nginx</code>) that groups multiple versions.</li>
+      <li><strong>Image</strong>: a specific version inside a repository.</li>
+      <li><strong>Tag</strong>: a human alias (<code>:1.25</code>, <code>:latest</code>).</li>
+      <li><strong>Digest</strong>: an immutable SHA-256 fingerprint (<code>@sha256:abc...</code>).</li>
+      <li><strong>Manifest</strong>: JSON description of an image (layers, platform).</li>
+    </ul>
 
-    <h4>Commandes essentielles</h4>
-    <pre data-lang="bash"><code><span class="tok-c"># Lancer un registry local</span>
+    <h4 data-lang="fr">Commandes essentielles</h4>
+    <h4 data-lang="en">Essential commands</h4>
+    <div data-lang="fr"><pre data-lang="bash"><code><span class="tok-c"># Lancer un registry local</span>
 docker run -d -p 5000:5000 --name registry registry:2
 
 <span class="tok-c"># Tagger une image pour le registry local</span>
@@ -1450,19 +1892,44 @@ curl http://localhost:5000/v2/_catalog
 curl http://localhost:5000/v2/hello/tags/list
 
 <span class="tok-c"># Récupérer depuis le registry</span>
-docker pull localhost:5000/hello:v1</code></pre>
+docker pull localhost:5000/hello:v1</code></pre></div>
+    <div data-lang="en"><pre data-lang="bash"><code><span class="tok-c"># Run a local registry</span>
+docker run -d -p 5000:5000 --name registry registry:2
 
-    <div class="callout warn">
+<span class="tok-c"># Tag an image for the local registry</span>
+docker tag hello localhost:5000/hello:v1
+
+<span class="tok-c"># Push</span>
+docker push localhost:5000/hello:v1
+
+<span class="tok-c"># List via the API</span>
+curl http://localhost:5000/v2/_catalog
+curl http://localhost:5000/v2/hello/tags/list
+
+<span class="tok-c"># Pull from the registry</span>
+docker pull localhost:5000/hello:v1</code></pre></div>
+
+    <div class="callout warn" data-lang="fr">
       <span class="callout-label">En production</span>
       Le registry <code>registry:2</code> ne fait <strong>ni</strong> authentification, <strong>ni</strong> RBAC, <strong>ni</strong> scan de vulnérabilités. En entreprise, on utilise <strong>Harbor</strong> (open source), ou les registries managés cloud : <strong>ECR</strong> (AWS), <strong>ACR</strong> (Azure), <strong>GCR</strong> (Google), <strong>Artifactory</strong> ou <strong>Nexus</strong>.
     </div>
+    <div class="callout warn" data-lang="en">
+      <span class="callout-label">In production</span>
+      The <code>registry:2</code> registry has <strong>no</strong> authentication, <strong>no</strong> RBAC, <strong>no</strong> vulnerability scanning. In enterprise, use <strong>Harbor</strong> (open source), or managed cloud registries: <strong>ECR</strong> (AWS), <strong>ACR</strong> (Azure), <strong>GCR</strong> (Google), <strong>Artifactory</strong> or <strong>Nexus</strong>.
+    </div>
 
-    <h4>Pourquoi ne pas tagger <code>:latest</code> en production</h4>
-    <p>Le tag <code>latest</code> n'a aucune signification stable : il pointe à un instant T sur ce que le mainteneur considère comme la dernière version. Demain, il peut pointer ailleurs. Cela rend les déploiements <strong>non reproductibles</strong>. Toujours utiliser une version explicite (<code>:1.25.3</code>) ou un digest pour les builds critiques.</p>
+    <h4 data-lang="fr">Pourquoi ne pas tagger <code>:latest</code> en production</h4>
+    <h4 data-lang="en">Why not tag <code>:latest</code> in production</h4>
+    <p data-lang="fr">Le tag <code>latest</code> n'a aucune signification stable : il pointe à un instant T sur ce que le mainteneur considère comme la dernière version. Demain, il peut pointer ailleurs. Cela rend les déploiements <strong>non reproductibles</strong>. Toujours utiliser une version explicite (<code>:1.25.3</code>) ou un digest pour les builds critiques.</p>
+    <p data-lang="en">The <code>latest</code> tag has no stable meaning: at any given moment it points to whatever the maintainer considers the latest version. Tomorrow, it may point elsewhere. This makes deployments <strong>non-reproducible</strong>. Always use an explicit version (<code>:1.25.3</code>) or a digest for critical builds.</p>
 
-    <div class="callout tip">
+    <div class="callout tip" data-lang="fr">
       <span class="callout-label">Validation</span>
       Vous expliquez à un collègue la différence entre repository, image, tag et digest. Vous savez pourquoi <code>:latest</code> en production est une faute professionnelle.
+    </div>
+    <div class="callout tip" data-lang="en">
+      <span class="callout-label">Validation</span>
+      You can explain to a colleague the difference between repository, image, tag and digest. You know why <code>:latest</code> in production is a professional mistake.
     </div>
   </article>
 
@@ -1470,36 +1937,62 @@ docker pull localhost:5000/hello:v1</code></pre>
   <article class="lab" id="lab06">
     <div class="lab-header">
       <span class="lab-num">06</span>
-      <h3 class="lab-title">Transferts hôte ↔ conteneur</h3>
+      <h3 class="lab-title" data-lang="fr">Transferts hôte ↔ conteneur</h3>
+      <h3 class="lab-title" data-lang="en">Host ↔ container transfers</h3>
     </div>
-    <div class="lab-meta">
+    <div class="lab-meta" data-lang="fr">
       <span><strong>Durée</strong> 20 min</span>
       <span><strong>Niveau</strong> Débutant</span>
       <span><strong>Source</strong> LAB06-DockerTransferringContent.md</span>
     </div>
+    <div class="lab-meta" data-lang="en">
+      <span><strong>Duration</strong> 20 min</span>
+      <span><strong>Level</strong> Beginner</span>
+      <span><strong>Source</strong> LAB06-DockerTransferringContent.md</span>
+    </div>
 
-    <h4>Objectif</h4>
-    <p>Copier des fichiers entre la machine hôte et un conteneur, en complément des volumes. Utile pour le débogage et l'extraction de logs ponctuelle.</p>
+    <h4 data-lang="fr">Objectif</h4>
+    <h4 data-lang="en">Goal</h4>
+    <p data-lang="fr">Copier des fichiers entre la machine hôte et un conteneur, en complément des volumes. Utile pour le débogage et l'extraction de logs ponctuelle.</p>
+    <p data-lang="en">Copy files between the host and a container, complementing volumes. Useful for debugging and one-off log extraction.</p>
 
-    <h4>Commandes essentielles</h4>
-    <pre data-lang="bash"><code><span class="tok-c"># Copier un fichier vers le conteneur</span>
+    <h4 data-lang="fr">Commandes essentielles</h4>
+    <h4 data-lang="en">Essential commands</h4>
+    <div data-lang="fr"><pre data-lang="bash"><code><span class="tok-c"># Copier un fichier vers le conteneur</span>
 docker cp ./config.json mycontainer:/etc/app/
 
 <span class="tok-c"># Récupérer un fichier depuis le conteneur</span>
 docker cp mycontainer:/var/log/app.log ./
 
 <span class="tok-c"># Récupérer un dossier complet</span>
-docker cp mycontainer:/etc/nginx ./nginx-backup</code></pre>
+docker cp mycontainer:/etc/nginx ./nginx-backup</code></pre></div>
+    <div data-lang="en"><pre data-lang="bash"><code><span class="tok-c"># Copy a file to the container</span>
+docker cp ./config.json mycontainer:/etc/app/
 
-    <h4>Quand utiliser quoi</h4>
-    <ul>
+<span class="tok-c"># Pull a file from the container</span>
+docker cp mycontainer:/var/log/app.log ./
+
+<span class="tok-c"># Pull a whole directory</span>
+docker cp mycontainer:/etc/nginx ./nginx-backup</code></pre></div>
+
+    <h4 data-lang="fr">Quand utiliser quoi</h4>
+    <h4 data-lang="en">When to use what</h4>
+    <ul data-lang="fr">
       <li><strong>Débogage ponctuel</strong>, extraction d'un fichier de log → <code>docker cp</code>.</li>
       <li><strong>Échanges réguliers</strong>, configuration partagée → <strong>volume</strong> ou <strong>bind mount</strong>.</li>
     </ul>
+    <ul data-lang="en">
+      <li><strong>One-off debugging</strong>, extracting a log file → <code>docker cp</code>.</li>
+      <li><strong>Regular exchanges</strong>, shared configuration → <strong>volume</strong> or <strong>bind mount</strong>.</li>
+    </ul>
 
-    <div class="callout tip">
+    <div class="callout tip" data-lang="fr">
       <span class="callout-label">Astuce</span>
       <code>docker cp</code> fonctionne même sur un conteneur <strong>arrêté</strong>. Très utile pour récupérer un état post-mortem après un crash.
+    </div>
+    <div class="callout tip" data-lang="en">
+      <span class="callout-label">Tip</span>
+      <code>docker cp</code> works even on a <strong>stopped</strong> container. Very useful for retrieving post-mortem state after a crash.
     </div>
   </article>
 
@@ -1507,16 +2000,24 @@ docker cp mycontainer:/etc/nginx ./nginx-backup</code></pre>
   <article class="lab" id="lab07">
     <div class="lab-header">
       <span class="lab-num">07</span>
-      <h3 class="lab-title">Build C++ Linux — Multi-stage en pratique</h3>
+      <h3 class="lab-title" data-lang="fr">Build C++ Linux — Multi-stage en pratique</h3>
+      <h3 class="lab-title" data-lang="en">C++ Linux build — Multi-stage in practice</h3>
     </div>
-    <div class="lab-meta">
+    <div class="lab-meta" data-lang="fr">
       <span><strong>Durée</strong> 45 min</span>
       <span><strong>Niveau</strong> Intermédiaire</span>
       <span><strong>Source</strong> LAB07-DockerfileForLinuxC++Build.md</span>
     </div>
+    <div class="lab-meta" data-lang="en">
+      <span><strong>Duration</strong> 45 min</span>
+      <span><strong>Level</strong> Intermediate</span>
+      <span><strong>Source</strong> LAB07-DockerfileForLinuxC++Build.md</span>
+    </div>
 
-    <h4>Objectif</h4>
-    <p>Le langage importe peu — l'enjeu est le <strong>multi-stage build</strong> : compiler dans une image lourde (avec compilateur, dépendances de build), puis copier le binaire produit dans une image légère pour l'exécution.</p>
+    <h4 data-lang="fr">Objectif</h4>
+    <h4 data-lang="en">Goal</h4>
+    <p data-lang="fr">Le langage importe peu — l'enjeu est le <strong>multi-stage build</strong> : compiler dans une image lourde (avec compilateur, dépendances de build), puis copier le binaire produit dans une image légère pour l'exécution.</p>
+    <p data-lang="en">The language doesn't matter much — the point is the <strong>multi-stage build</strong>: compile in a heavy image (with compiler, build deps), then copy the produced binary into a lightweight image for execution.</p>
 
     <figure class="diagram">
       <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" role="img">
@@ -1543,11 +2044,13 @@ docker cp mycontainer:/etc/nginx ./nginx-backup</code></pre>
         <text class="ms-text" x="540" y="90" text-anchor="middle">FROM debian:slim</text>
         <text class="ms-text" x="540" y="115" text-anchor="middle">~ 80 MB</text>
       </svg>
-      <figcaption><strong>Schéma 7.</strong> Multi-stage build : on compile dans un environnement riche, on n'embarque que le strict nécessaire dans l'image finale. Réduction typique de taille : 5× à 20×.</figcaption>
+      <figcaption data-lang="fr"><strong>Schéma 7.</strong> Multi-stage build : on compile dans un environnement riche, on n'embarque que le strict nécessaire dans l'image finale. Réduction typique de taille : 5× à 20×.</figcaption>
+      <figcaption data-lang="en"><strong>Diagram 7.</strong> Multi-stage build: compile in a rich environment, ship only the strict minimum in the final image. Typical size reduction: 5× to 20×.</figcaption>
     </figure>
 
-    <h4>Pattern à mémoriser (universel, applicable à Go, Java, Node, Rust)</h4>
-    <pre data-lang="dockerfile"><code><span class="tok-c"># Stage 1 : build</span>
+    <h4 data-lang="fr">Pattern à mémoriser (universel, applicable à Go, Java, Node, Rust)</h4>
+    <h4 data-lang="en">Pattern to memorize (universal, applies to Go, Java, Node, Rust)</h4>
+    <div data-lang="fr"><pre data-lang="dockerfile"><code><span class="tok-c"># Stage 1 : build</span>
 <span class="tok-k">FROM</span> golang:1.22 <span class="tok-k">AS</span> builder
 <span class="tok-k">WORKDIR</span> /src
 <span class="tok-k">COPY</span> . .
@@ -1557,11 +2060,26 @@ docker cp mycontainer:/etc/nginx ./nginx-backup</code></pre>
 <span class="tok-k">FROM</span> gcr.io/distroless/static-debian12
 <span class="tok-k">COPY</span> --from=builder /app /app
 <span class="tok-k">USER</span> 65532
-<span class="tok-k">ENTRYPOINT</span> [<span class="tok-s">"/app"</span>]</code></pre>
+<span class="tok-k">ENTRYPOINT</span> [<span class="tok-s">"/app"</span>]</code></pre></div>
+    <div data-lang="en"><pre data-lang="dockerfile"><code><span class="tok-c"># Stage 1: build</span>
+<span class="tok-k">FROM</span> golang:1.22 <span class="tok-k">AS</span> builder
+<span class="tok-k">WORKDIR</span> /src
+<span class="tok-k">COPY</span> . .
+<span class="tok-k">RUN</span> CGO_ENABLED=0 go build -o /app
 
-    <div class="callout tip">
+<span class="tok-c"># Stage 2: minimal runtime</span>
+<span class="tok-k">FROM</span> gcr.io/distroless/static-debian12
+<span class="tok-k">COPY</span> --from=builder /app /app
+<span class="tok-k">USER</span> 65532
+<span class="tok-k">ENTRYPOINT</span> [<span class="tok-s">"/app"</span>]</code></pre></div>
+
+    <div class="callout tip" data-lang="fr">
       <span class="callout-label">Validation</span>
       Vous écrivez un multi-stage Dockerfile pour un langage compilé de votre choix, et l'image finale fait au moins 5× moins que l'image de build.
+    </div>
+    <div class="callout tip" data-lang="en">
+      <span class="callout-label">Validation</span>
+      You write a multi-stage Dockerfile for a compiled language of your choice, and the final image is at least 5× smaller than the build image.
     </div>
   </article>
 
@@ -1569,48 +2087,76 @@ docker cp mycontainer:/etc/nginx ./nginx-backup</code></pre>
   <article class="lab" id="lab08">
     <div class="lab-header">
       <span class="lab-num">08</span>
-      <h3 class="lab-title">Build C++ Windows — Conteneurs Windows</h3>
+      <h3 class="lab-title" data-lang="fr">Build C++ Windows — Conteneurs Windows</h3>
+      <h3 class="lab-title" data-lang="en">C++ Windows build — Windows containers</h3>
     </div>
-    <div class="lab-meta">
+    <div class="lab-meta" data-lang="fr">
       <span><strong>Durée</strong> 30 min</span>
       <span><strong>Niveau</strong> Avancé / niche</span>
       <span><strong>Source</strong> LAB08-DockerfileForWindowsC++Build.md</span>
     </div>
+    <div class="lab-meta" data-lang="en">
+      <span><strong>Duration</strong> 30 min</span>
+      <span><strong>Level</strong> Advanced / niche</span>
+      <span><strong>Source</strong> LAB08-DockerfileForWindowsC++Build.md</span>
+    </div>
 
-    <h4>Objectif</h4>
-    <p>Découvrir les <strong>conteneurs Windows</strong>, basés sur Windows Server Core ou Nano Server. Cas d'usage spécifique : applications .NET Framework historiques, services Windows, build IIS.</p>
+    <h4 data-lang="fr">Objectif</h4>
+    <h4 data-lang="en">Goal</h4>
+    <p data-lang="fr">Découvrir les <strong>conteneurs Windows</strong>, basés sur Windows Server Core ou Nano Server. Cas d'usage spécifique : applications .NET Framework historiques, services Windows, build IIS.</p>
+    <p data-lang="en">Discover <strong>Windows containers</strong>, based on Windows Server Core or Nano Server. Specific use cases: legacy .NET Framework applications, Windows services, IIS builds.</p>
 
-    <div class="callout warn">
+    <div class="callout warn" data-lang="fr">
       <span class="callout-label">Compatibilité</span>
       Les conteneurs Windows ne tournent que sur Windows. Sur Linux et macOS, on ne peut pas les exécuter (ou alors via une VM Windows complète, ce qui défait l'intérêt).
     </div>
+    <div class="callout warn" data-lang="en">
+      <span class="callout-label">Compatibility</span>
+      Windows containers only run on Windows. On Linux and macOS, you can't execute them (or only via a full Windows VM, which defeats the purpose).
+    </div>
 
-    <h4>Particularités</h4>
-    <ul>
+    <h4 data-lang="fr">Particularités</h4>
+    <h4 data-lang="en">Specifics</h4>
+    <ul data-lang="fr">
       <li>Images de base : <code>mcr.microsoft.com/windows/servercore</code>, <code>mcr.microsoft.com/windows/nanoserver</code>.</li>
       <li>Tailles colossales (1 à 5 Go contre 5 à 100 Mo pour Linux).</li>
       <li>Le moteur Docker doit être basculé en mode <em>Windows containers</em> dans Docker Desktop.</li>
     </ul>
+    <ul data-lang="en">
+      <li>Base images: <code>mcr.microsoft.com/windows/servercore</code>, <code>mcr.microsoft.com/windows/nanoserver</code>.</li>
+      <li>Massive sizes (1 to 5 GB versus 5 to 100 MB for Linux).</li>
+      <li>The Docker engine must be switched to <em>Windows containers</em> mode in Docker Desktop.</li>
+    </ul>
 
-    <p>Pour la majorité des lecteurs, ce lab est <strong>optionnel</strong>. À ne pratiquer que si votre métier vous y confronte (.NET Framework legacy, applications Windows à containeriser).</p>
+    <p data-lang="fr">Pour la majorité des lecteurs, ce lab est <strong>optionnel</strong>. À ne pratiquer que si votre métier vous y confronte (.NET Framework legacy, applications Windows à containeriser).</p>
+    <p data-lang="en">For most readers, this lab is <strong>optional</strong>. Only worth doing if your work requires it (legacy .NET Framework, Windows applications to containerize).</p>
   </article>
 
   <!-- ===== LAB 09 ===== -->
   <article class="lab" id="lab09">
     <div class="lab-header">
       <span class="lab-num">09</span>
-      <h3 class="lab-title">Configuration du daemon — Proxy, registries, logs</h3>
+      <h3 class="lab-title" data-lang="fr">Configuration du daemon — Proxy, registries, logs</h3>
+      <h3 class="lab-title" data-lang="en">Daemon configuration — Proxy, registries, logs</h3>
     </div>
-    <div class="lab-meta">
+    <div class="lab-meta" data-lang="fr">
       <span><strong>Durée</strong> 30 min</span>
       <span><strong>Niveau</strong> Intermédiaire</span>
       <span><strong>Source</strong> LAB09-DockerConfiguration.md</span>
     </div>
+    <div class="lab-meta" data-lang="en">
+      <span><strong>Duration</strong> 30 min</span>
+      <span><strong>Level</strong> Intermediate</span>
+      <span><strong>Source</strong> LAB09-DockerConfiguration.md</span>
+    </div>
 
-    <h4>Objectif</h4>
-    <p>Maîtriser <code>/etc/docker/daemon.json</code> (Linux) ou les paramètres Docker Desktop pour gérer proxies d'entreprise, registries miroirs, et limiter la croissance des logs.</p>
+    <h4 data-lang="fr">Objectif</h4>
+    <h4 data-lang="en">Goal</h4>
+    <p data-lang="fr">Maîtriser <code>/etc/docker/daemon.json</code> (Linux) ou les paramètres Docker Desktop pour gérer proxies d'entreprise, registries miroirs, et limiter la croissance des logs.</p>
+    <p data-lang="en">Master <code>/etc/docker/daemon.json</code> (Linux) or Docker Desktop settings to manage corporate proxies, mirror registries, and limit log growth.</p>
 
-    <h4>Exemple complet de daemon.json</h4>
+    <h4 data-lang="fr">Exemple complet de daemon.json</h4>
+    <h4 data-lang="en">Complete daemon.json example</h4>
     <pre data-lang="json"><code>{
   <span class="tok-s">"insecure-registries"</span>: [<span class="tok-s">"registry.local:5000"</span>],
   <span class="tok-s">"registry-mirrors"</span>: [<span class="tok-s">"https://mirror.gcr.io"</span>],
@@ -1623,8 +2169,10 @@ docker cp mycontainer:/etc/nginx ./nginx-backup</code></pre>
   <span class="tok-s">"live-restore"</span>: true
 }</code></pre>
 
-    <h4>Proxy d'entreprise (Linux)</h4>
-    <p>Configuration via systemd (<code>/etc/systemd/system/docker.service.d/http-proxy.conf</code>) :</p>
+    <h4 data-lang="fr">Proxy d'entreprise (Linux)</h4>
+    <h4 data-lang="en">Corporate proxy (Linux)</h4>
+    <p data-lang="fr">Configuration via systemd (<code>/etc/systemd/system/docker.service.d/http-proxy.conf</code>) :</p>
+    <p data-lang="en">Configuration via systemd (<code>/etc/systemd/system/docker.service.d/http-proxy.conf</code>):</p>
     <pre data-lang="ini"><code>[Service]
 Environment=<span class="tok-s">"HTTP_PROXY=http://proxy.corp:3128"</span>
 Environment=<span class="tok-s">"HTTPS_PROXY=http://proxy.corp:3128"</span>
@@ -1633,9 +2181,13 @@ Environment=<span class="tok-s">"NO_PROXY=localhost,127.0.0.1,.corp.local"</span
     <pre data-lang="bash"><code>sudo systemctl daemon-reload
 sudo systemctl restart docker</code></pre>
 
-    <div class="callout warn">
+    <div class="callout warn" data-lang="fr">
       <span class="callout-label">Piège classique</span>
       Sans <code>log-opts</code>, les logs s'accumulent indéfiniment dans <code>/var/lib/docker/containers/.../*-json.log</code>. Sur un serveur qui tourne longtemps, ça remplit silencieusement le disque.
+    </div>
+    <div class="callout warn" data-lang="en">
+      <span class="callout-label">Common pitfall</span>
+      Without <code>log-opts</code>, logs accumulate indefinitely in <code>/var/lib/docker/containers/.../*-json.log</code>. On a long-running server, this silently fills the disk.
     </div>
   </article>
 
@@ -1643,27 +2195,43 @@ sudo systemctl restart docker</code></pre>
   <article class="lab" id="lab10">
     <div class="lab-header">
       <span class="lab-num">10</span>
-      <h3 class="lab-title">Multi-platform builds — ARM et AMD64 <span class="tag new">2024+</span></h3>
+      <h3 class="lab-title" data-lang="fr">Multi-platform builds — ARM et AMD64 <span class="tag new">2024+</span></h3>
+      <h3 class="lab-title" data-lang="en">Multi-platform builds — ARM and AMD64 <span class="tag new">2024+</span></h3>
     </div>
-    <div class="lab-meta">
+    <div class="lab-meta" data-lang="fr">
       <span><strong>Durée</strong> 45 min</span>
       <span><strong>Niveau</strong> Intermédiaire</span>
       <span><strong>Source</strong> LAB10-MultiPlatformBuilds.md</span>
     </div>
+    <div class="lab-meta" data-lang="en">
+      <span><strong>Duration</strong> 45 min</span>
+      <span><strong>Level</strong> Intermediate</span>
+      <span><strong>Source</strong> LAB10-MultiPlatformBuilds.md</span>
+    </div>
 
-    <h4>Objectif</h4>
-    <p>Produire une image qui tourne sur plusieurs architectures avec une seule commande de build. Indispensable depuis l'arrivée d'Apple Silicon (M1/M2/M3) et la généralisation d'AWS Graviton et Raspberry Pi en production.</p>
+    <h4 data-lang="fr">Objectif</h4>
+    <h4 data-lang="en">Goal</h4>
+    <p data-lang="fr">Produire une image qui tourne sur plusieurs architectures avec une seule commande de build. Indispensable depuis l'arrivée d'Apple Silicon (M1/M2/M3) et la généralisation d'AWS Graviton et Raspberry Pi en production.</p>
+    <p data-lang="en">Produce an image that runs on multiple architectures with a single build command. Essential since the arrival of Apple Silicon (M1/M2/M3) and the spread of AWS Graviton and Raspberry Pi in production.</p>
 
-    <h4>Pourquoi c'est devenu critique</h4>
-    <ul>
+    <h4 data-lang="fr">Pourquoi c'est devenu critique</h4>
+    <h4 data-lang="en">Why this became critical</h4>
+    <ul data-lang="fr">
       <li>Apple Silicon (ARM64) sur les laptops développeurs.</li>
       <li>AWS Graviton (ARM64) à 20% moins cher que x86 chez AWS.</li>
       <li>Raspberry Pi et edge computing.</li>
       <li>Les images <em>amd64-only</em> ne tournent plus de manière performante sur ces machines.</li>
     </ul>
+    <ul data-lang="en">
+      <li>Apple Silicon (ARM64) on developer laptops.</li>
+      <li>AWS Graviton (ARM64) is 20% cheaper than x86 on AWS.</li>
+      <li>Raspberry Pi and edge computing.</li>
+      <li><em>amd64-only</em> images no longer run efficiently on these machines.</li>
+    </ul>
 
-    <h4>Setup buildx et build multi-arch</h4>
-    <pre data-lang="bash"><code><span class="tok-c"># Créer un builder dédié</span>
+    <h4 data-lang="fr">Setup buildx et build multi-arch</h4>
+    <h4 data-lang="en">buildx setup and multi-arch build</h4>
+    <div data-lang="fr"><pre data-lang="bash"><code><span class="tok-c"># Créer un builder dédié</span>
 docker buildx create --name multi --use
 docker buildx inspect --bootstrap
 
@@ -1674,9 +2242,22 @@ docker buildx build \
   --push .
 
 <span class="tok-c"># Vérifier le manifest multi-arch</span>
-docker manifest inspect myrepo/myapp:1.0</code></pre>
+docker manifest inspect myrepo/myapp:1.0</code></pre></div>
+    <div data-lang="en"><pre data-lang="bash"><code><span class="tok-c"># Create a dedicated builder</span>
+docker buildx create --name multi --use
+docker buildx inspect --bootstrap
 
-    <h4>Dockerfile cross-compile (Go)</h4>
+<span class="tok-c"># Build for two architectures and push directly</span>
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t myrepo/myapp:1.0 \
+  --push .
+
+<span class="tok-c"># Verify the multi-arch manifest</span>
+docker manifest inspect myrepo/myapp:1.0</code></pre></div>
+
+    <h4 data-lang="fr">Dockerfile cross-compile (Go)</h4>
+    <h4 data-lang="en">Cross-compile Dockerfile (Go)</h4>
     <pre data-lang="dockerfile"><code><span class="tok-c"># syntax=docker/dockerfile:1.4</span>
 <span class="tok-k">FROM</span> --platform=$BUILDPLATFORM golang:1.22 <span class="tok-k">AS</span> builder
 <span class="tok-k">ARG</span> TARGETOS TARGETARCH
@@ -1689,9 +2270,13 @@ docker manifest inspect myrepo/myapp:1.0</code></pre>
 <span class="tok-k">COPY</span> --from=builder /app /usr/local/bin/
 <span class="tok-k">CMD</span> [<span class="tok-s">"app"</span>]</code></pre>
 
-    <div class="callout tip">
+    <div class="callout tip" data-lang="fr">
       <span class="callout-label">Validation</span>
       Vous lancez un build multi-arch et inspectez le manifest pour confirmer la présence de plusieurs entrées (linux/amd64, linux/arm64).
+    </div>
+    <div class="callout tip" data-lang="en">
+      <span class="callout-label">Validation</span>
+      You run a multi-arch build and inspect the manifest to confirm multiple entries (linux/amd64, linux/arm64).
     </div>
   </article>
 
@@ -1699,16 +2284,24 @@ docker manifest inspect myrepo/myapp:1.0</code></pre>
   <article class="lab" id="lab11">
     <div class="lab-header">
       <span class="lab-num">11</span>
-      <h3 class="lab-title">Sécurité — Distroless, non-root, scan <span class="tag security">critique</span></h3>
+      <h3 class="lab-title" data-lang="fr">Sécurité — Distroless, non-root, scan <span class="tag security">critique</span></h3>
+      <h3 class="lab-title" data-lang="en">Security — Distroless, non-root, scan <span class="tag security">critical</span></h3>
     </div>
-    <div class="lab-meta">
+    <div class="lab-meta" data-lang="fr">
       <span><strong>Durée</strong> 1 h</span>
       <span><strong>Niveau</strong> Intermédiaire</span>
       <span><strong>Source</strong> LAB11-SecurityBestPractices.md</span>
     </div>
+    <div class="lab-meta" data-lang="en">
+      <span><strong>Duration</strong> 1 h</span>
+      <span><strong>Level</strong> Intermediate</span>
+      <span><strong>Source</strong> LAB11-SecurityBestPractices.md</span>
+    </div>
 
-    <h4>Objectif</h4>
-    <p>Le lab le plus important du repository. Trois piliers de la sécurité de conteneurs en 2026 : <strong>image minimale</strong>, <strong>utilisateur non-root</strong>, <strong>scan systématique</strong>.</p>
+    <h4 data-lang="fr">Objectif</h4>
+    <h4 data-lang="en">Goal</h4>
+    <p data-lang="fr">Le lab le plus important du repository. Trois piliers de la sécurité de conteneurs en 2026 : <strong>image minimale</strong>, <strong>utilisateur non-root</strong>, <strong>scan systématique</strong>.</p>
+    <p data-lang="en">The most important lab in the repository. Three pillars of container security in 2026: <strong>minimal image</strong>, <strong>non-root user</strong>, <strong>systematic scanning</strong>.</p>
 
     <figure class="diagram">
       <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" role="img">
@@ -1737,11 +2330,13 @@ docker manifest inspect myrepo/myapp:1.0</code></pre>
         <text class="sec-text" x="620" y="145" text-anchor="middle">~ 2 MB</text>
         <text class="sec-annot" x="620" y="180" text-anchor="middle">~ 0 CVEs</text>
       </svg>
-      <figcaption><strong>Schéma 8.</strong> Comparaison des images de base. Distroless = pas de shell, pas de package manager, surface d'attaque divisée par dix.</figcaption>
+      <figcaption data-lang="fr"><strong>Schéma 8.</strong> Comparaison des images de base. Distroless = pas de shell, pas de package manager, surface d'attaque divisée par dix.</figcaption>
+      <figcaption data-lang="en"><strong>Diagram 8.</strong> Base image comparison. Distroless = no shell, no package manager, attack surface divided by ten.</figcaption>
     </figure>
 
-    <h4>Pilier 1 — Image minimale (distroless)</h4>
-    <pre data-lang="dockerfile"><code><span class="tok-k">FROM</span> node:20 <span class="tok-k">AS</span> builder
+    <h4 data-lang="fr">Pilier 1 — Image minimale (distroless)</h4>
+    <h4 data-lang="en">Pillar 1 — Minimal image (distroless)</h4>
+    <div data-lang="fr"><pre data-lang="dockerfile"><code><span class="tok-k">FROM</span> node:20 <span class="tok-k">AS</span> builder
 <span class="tok-k">WORKDIR</span> /app
 <span class="tok-k">COPY</span> package*.json ./
 <span class="tok-k">RUN</span> npm ci --only=production
@@ -1751,10 +2346,23 @@ docker manifest inspect myrepo/myapp:1.0</code></pre>
 <span class="tok-k">FROM</span> gcr.io/distroless/nodejs20-debian12
 <span class="tok-k">COPY</span> --from=builder /app /app
 <span class="tok-k">WORKDIR</span> /app
-<span class="tok-k">CMD</span> [<span class="tok-s">"index.js"</span>]</code></pre>
+<span class="tok-k">CMD</span> [<span class="tok-s">"index.js"</span>]</code></pre></div>
+    <div data-lang="en"><pre data-lang="dockerfile"><code><span class="tok-k">FROM</span> node:20 <span class="tok-k">AS</span> builder
+<span class="tok-k">WORKDIR</span> /app
+<span class="tok-k">COPY</span> package*.json ./
+<span class="tok-k">RUN</span> npm ci --only=production
+<span class="tok-k">COPY</span> . .
 
-    <h4>Pilier 2 — Utilisateur non-root</h4>
-    <p>D'après le rapport Sysdig 2024, <strong>58% des images en production tournent en root</strong>. Si un attaquant s'évade du conteneur, il a alors les droits root sur l'hôte.</p>
+<span class="tok-c"># Final: no shell, no package manager</span>
+<span class="tok-k">FROM</span> gcr.io/distroless/nodejs20-debian12
+<span class="tok-k">COPY</span> --from=builder /app /app
+<span class="tok-k">WORKDIR</span> /app
+<span class="tok-k">CMD</span> [<span class="tok-s">"index.js"</span>]</code></pre></div>
+
+    <h4 data-lang="fr">Pilier 2 — Utilisateur non-root</h4>
+    <h4 data-lang="en">Pillar 2 — Non-root user</h4>
+    <p data-lang="fr">D'après le rapport Sysdig 2024, <strong>58% des images en production tournent en root</strong>. Si un attaquant s'évade du conteneur, il a alors les droits root sur l'hôte.</p>
+    <p data-lang="en">According to the Sysdig 2024 report, <strong>58% of production images run as root</strong>. If an attacker escapes the container, they get root on the host.</p>
     <pre data-lang="dockerfile"><code><span class="tok-k">FROM</span> alpine:3.19
 <span class="tok-k">RUN</span> addgroup -S app &amp;&amp; adduser -S app -G app
 <span class="tok-k">COPY</span> --chown=app:app . /app
@@ -1762,8 +2370,9 @@ docker manifest inspect myrepo/myapp:1.0</code></pre>
 <span class="tok-k">WORKDIR</span> /app
 <span class="tok-k">CMD</span> [<span class="tok-s">"./run.sh"</span>]</code></pre>
 
-    <h4>Pilier 3 — Scan de vulnérabilités</h4>
-    <pre data-lang="bash"><code><span class="tok-c"># Trivy (open source, le plus populaire)</span>
+    <h4 data-lang="fr">Pilier 3 — Scan de vulnérabilités</h4>
+    <h4 data-lang="en">Pillar 3 — Vulnerability scanning</h4>
+    <div data-lang="fr"><pre data-lang="bash"><code><span class="tok-c"># Trivy (open source, le plus populaire)</span>
 trivy image myapp:latest
 
 <span class="tok-c"># Docker Scout (intégré à Docker Desktop)</span>
@@ -1772,16 +2381,34 @@ docker scout cves myapp:latest
 docker scout recommendations myapp:latest
 
 <span class="tok-c"># En CI/CD : échec si CVE critique</span>
-trivy image --severity CRITICAL --exit-code 1 myapp:latest</code></pre>
+trivy image --severity CRITICAL --exit-code 1 myapp:latest</code></pre></div>
+    <div data-lang="en"><pre data-lang="bash"><code><span class="tok-c"># Trivy (open source, the most popular)</span>
+trivy image myapp:latest
 
-    <div class="callout warn">
+<span class="tok-c"># Docker Scout (built into Docker Desktop)</span>
+docker scout quickview myapp:latest
+docker scout cves myapp:latest
+docker scout recommendations myapp:latest
+
+<span class="tok-c"># In CI/CD: fail on critical CVE</span>
+trivy image --severity CRITICAL --exit-code 1 myapp:latest</code></pre></div>
+
+    <div class="callout warn" data-lang="fr">
       <span class="callout-label">Règle d'or</span>
       Le scan en local ne sert à rien s'il n'est pas <strong>intégré au CI/CD</strong>. Configurer GitHub Actions, Azure DevOps Pipeline ou GitLab CI pour faire échouer toute PR qui introduit un CVE critique.
     </div>
+    <div class="callout warn" data-lang="en">
+      <span class="callout-label">Golden rule</span>
+      Local scanning is worthless if it isn't <strong>wired into CI/CD</strong>. Configure GitHub Actions, Azure DevOps Pipeline or GitLab CI to fail any PR that introduces a critical CVE.
+    </div>
 
-    <div class="callout tip">
+    <div class="callout tip" data-lang="fr">
       <span class="callout-label">Validation</span>
       Vous transformez n'importe quel Dockerfile naïf en version distroless, non-root, scannée et propre. Vous savez expliquer pourquoi <code>USER app</code> doit venir <em>après</em> les <code>RUN</code> qui nécessitent root.
+    </div>
+    <div class="callout tip" data-lang="en">
+      <span class="callout-label">Validation</span>
+      You can turn any naive Dockerfile into a distroless, non-root, scanned, clean version. You can explain why <code>USER app</code> must come <em>after</em> the <code>RUN</code>s that need root.
     </div>
   </article>
 
@@ -1789,42 +2416,67 @@ trivy image --severity CRITICAL --exit-code 1 myapp:latest</code></pre>
   <article class="lab" id="lab12">
     <div class="lab-header">
       <span class="lab-num">12</span>
-      <h3 class="lab-title">Healthchecks et .dockerignore <span class="tag new">2024+</span></h3>
+      <h3 class="lab-title" data-lang="fr">Healthchecks et .dockerignore <span class="tag new">2024+</span></h3>
+      <h3 class="lab-title" data-lang="en">Healthchecks and .dockerignore <span class="tag new">2024+</span></h3>
     </div>
-    <div class="lab-meta">
+    <div class="lab-meta" data-lang="fr">
       <span><strong>Durée</strong> 30 min</span>
       <span><strong>Niveau</strong> Débutant</span>
       <span><strong>Source</strong> LAB12-HealthchecksDockerignore.md</span>
     </div>
+    <div class="lab-meta" data-lang="en">
+      <span><strong>Duration</strong> 30 min</span>
+      <span><strong>Level</strong> Beginner</span>
+      <span><strong>Source</strong> LAB12-HealthchecksDockerignore.md</span>
+    </div>
 
-    <h4>Objectif</h4>
-    <p>Deux pratiques de production souvent oubliées en formation : la santé applicative (au-delà du simple "le conteneur tourne") et la maîtrise du contexte de build.</p>
+    <h4 data-lang="fr">Objectif</h4>
+    <h4 data-lang="en">Goal</h4>
+    <p data-lang="fr">Deux pratiques de production souvent oubliées en formation : la santé applicative (au-delà du simple "le conteneur tourne") et la maîtrise du contexte de build.</p>
+    <p data-lang="en">Two production practices often forgotten in training: application health (beyond the simple "the container is running") and control over the build context.</p>
 
-    <h4>Healthcheck — Au-delà du <em>Up</em></h4>
-    <p>Sans <code>HEALTHCHECK</code>, Docker affiche <em>Up</em> même si l'application est gelée ou ne répond plus. Le healthcheck permet à Docker (et Compose, et orchestrateurs) de détecter une panne applicative.</p>
+    <h4 data-lang="fr">Healthcheck — Au-delà du <em>Up</em></h4>
+    <h4 data-lang="en">Healthcheck — Beyond <em>Up</em></h4>
+    <p data-lang="fr">Sans <code>HEALTHCHECK</code>, Docker affiche <em>Up</em> même si l'application est gelée ou ne répond plus. Le healthcheck permet à Docker (et Compose, et orchestrateurs) de détecter une panne applicative.</p>
+    <p data-lang="en">Without <code>HEALTHCHECK</code>, Docker shows <em>Up</em> even if the application is frozen or unresponsive. The healthcheck lets Docker (and Compose, and orchestrators) detect an application failure.</p>
     <pre data-lang="dockerfile"><code><span class="tok-k">FROM</span> nginx:alpine
 
 <span class="tok-k">HEALTHCHECK</span> --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget --quiet --tries=1 --spider http://localhost/ || exit 1</code></pre>
 
-    <h4>Paramètres</h4>
-    <ul>
+    <h4 data-lang="fr">Paramètres</h4>
+    <h4 data-lang="en">Parameters</h4>
+    <ul data-lang="fr">
       <li><code>--interval</code> : fréquence de vérification (30s par défaut)</li>
       <li><code>--timeout</code> : durée max avant timeout (30s par défaut)</li>
       <li><code>--start-period</code> : délai de démarrage avant les premières vérifications</li>
       <li><code>--retries</code> : nombre d'échecs consécutifs avant marqué <em>unhealthy</em></li>
     </ul>
+    <ul data-lang="en">
+      <li><code>--interval</code>: check frequency (30s by default)</li>
+      <li><code>--timeout</code>: max duration before timeout (30s by default)</li>
+      <li><code>--start-period</code>: warmup delay before the first checks</li>
+      <li><code>--retries</code>: number of consecutive failures before marking <em>unhealthy</em></li>
+    </ul>
 
-    <h4>.dockerignore — Maîtriser le contexte de build</h4>
-    <p>Sans <code>.dockerignore</code>, votre <em>build context</em> envoie tout le contenu du dossier au daemon, y compris :</p>
-    <ul>
+    <h4 data-lang="fr">.dockerignore — Maîtriser le contexte de build</h4>
+    <h4 data-lang="en">.dockerignore — Control the build context</h4>
+    <p data-lang="fr">Sans <code>.dockerignore</code>, votre <em>build context</em> envoie tout le contenu du dossier au daemon, y compris :</p>
+    <p data-lang="en">Without <code>.dockerignore</code>, your <em>build context</em> sends the entire folder to the daemon, including:</p>
+    <ul data-lang="fr">
       <li>Le dossier <code>.git</code> (souvent énorme)</li>
       <li><code>node_modules/</code> ou <code>venv/</code> (vont être réinstallés dans l'image)</li>
       <li><strong>Fichiers de secrets</strong> : <code>.env</code>, <code>id_rsa</code>, <code>credentials.json</code></li>
     </ul>
+    <ul data-lang="en">
+      <li>The <code>.git</code> directory (often huge)</li>
+      <li><code>node_modules/</code> or <code>venv/</code> (which will be reinstalled inside the image)</li>
+      <li><strong>Secret files</strong>: <code>.env</code>, <code>id_rsa</code>, <code>credentials.json</code></li>
+    </ul>
 
-    <h4>.dockerignore minimal recommandé</h4>
-    <pre data-lang="text"><code><span class="tok-c"># Git</span>
+    <h4 data-lang="fr">.dockerignore minimal recommandé</h4>
+    <h4 data-lang="en">Recommended minimal .dockerignore</h4>
+    <div data-lang="fr"><pre data-lang="text"><code><span class="tok-c"># Git</span>
 .git
 .gitignore
 
@@ -1854,16 +2506,55 @@ secrets/
 <span class="tok-c"># Documentation et tests (optionnel)</span>
 *.md
 README*
-tests/</code></pre>
+tests/</code></pre></div>
+    <div data-lang="en"><pre data-lang="text"><code><span class="tok-c"># Git</span>
+.git
+.gitignore
 
-    <div class="callout warn">
+<span class="tok-c"># Local dependencies</span>
+node_modules
+venv
+__pycache__
+*.pyc
+
+<span class="tok-c"># Build</span>
+dist
+build
+target
+
+<span class="tok-c"># Secrets (CRITICAL)</span>
+.env
+.env.*
+*.pem
+*.key
+secrets/
+
+<span class="tok-c"># IDE & OS</span>
+.vscode
+.idea
+.DS_Store
+
+<span class="tok-c"># Documentation and tests (optional)</span>
+*.md
+README*
+tests/</code></pre></div>
+
+    <div class="callout warn" data-lang="fr">
       <span class="callout-label">Important pour Kubernetes</span>
       En Kubernetes, le <code>HEALTHCHECK</code> Dockerfile est <strong>ignoré</strong>. K8s utilise ses propres mécanismes : <code>livenessProbe</code>, <code>readinessProbe</code>, <code>startupProbe</code>. Bonne nouvelle : les concepts sont identiques.
     </div>
+    <div class="callout warn" data-lang="en">
+      <span class="callout-label">Important for Kubernetes</span>
+      In Kubernetes, the Dockerfile <code>HEALTHCHECK</code> is <strong>ignored</strong>. K8s uses its own mechanisms: <code>livenessProbe</code>, <code>readinessProbe</code>, <code>startupProbe</code>. Good news: the concepts are identical.
+    </div>
 
-    <div class="callout tip">
+    <div class="callout tip" data-lang="fr">
       <span class="callout-label">Validation</span>
       Vous ajoutez un healthcheck à un service existant et vérifiez qu'il passe à <em>unhealthy</em> quand vous bloquez l'application. Vous comprenez l'impact sécuritaire d'un <code>.dockerignore</code> manquant.
+    </div>
+    <div class="callout tip" data-lang="en">
+      <span class="callout-label">Validation</span>
+      You add a healthcheck to an existing service and verify it transitions to <em>unhealthy</em> when you block the application. You understand the security impact of a missing <code>.dockerignore</code>.
     </div>
   </article>
 
@@ -1871,22 +2562,34 @@ tests/</code></pre>
 
 <!-- ===== 6. CHEATSHEET ===== -->
 <section id="cheatsheet">
-  <span class="section-num">§ 06 — Référence</span>
-  <h2>Cheatsheet — Les commandes à connaître</h2>
-  <p class="lede">Une page-aide-mémoire à imprimer ou à garder ouverte dans un onglet.</p>
+  <span class="section-num" data-lang="fr">§ 06 — Référence</span>
+  <span class="section-num" data-lang="en">§ 06 — Reference</span>
+  <h2 data-lang="fr">Cheatsheet — Les commandes à connaître</h2>
+  <h2 data-lang="en">Cheatsheet — The commands to know</h2>
+  <p class="lede" data-lang="fr">Une page-aide-mémoire à imprimer ou à garder ouverte dans un onglet.</p>
+  <p class="lede" data-lang="en">A reference page to print or keep open in a tab.</p>
 
   <h3>Images</h3>
-  <pre data-lang="bash"><code>docker image ls                          <span class="tok-c"># lister</span>
+  <div data-lang="fr"><pre data-lang="bash"><code>docker image ls                          <span class="tok-c"># lister</span>
 docker image build -t name:tag .         <span class="tok-c"># construire</span>
 docker image pull name:tag               <span class="tok-c"># télécharger</span>
 docker image push name:tag               <span class="tok-c"># publier</span>
 docker image rm name:tag                 <span class="tok-c"># supprimer</span>
 docker image prune -a                    <span class="tok-c"># nettoyer (toutes images orphelines)</span>
 docker image inspect name:tag            <span class="tok-c"># détails JSON</span>
-docker image history name:tag            <span class="tok-c"># couches</span></code></pre>
+docker image history name:tag            <span class="tok-c"># couches</span></code></pre></div>
+  <div data-lang="en"><pre data-lang="bash"><code>docker image ls                          <span class="tok-c"># list</span>
+docker image build -t name:tag .         <span class="tok-c"># build</span>
+docker image pull name:tag               <span class="tok-c"># download</span>
+docker image push name:tag               <span class="tok-c"># publish</span>
+docker image rm name:tag                 <span class="tok-c"># remove</span>
+docker image prune -a                    <span class="tok-c"># clean (all orphan images)</span>
+docker image inspect name:tag            <span class="tok-c"># JSON details</span>
+docker image history name:tag            <span class="tok-c"># layers</span></code></pre></div>
 
-  <h3>Conteneurs</h3>
-  <pre data-lang="bash"><code>docker container ls -a                   <span class="tok-c"># lister tous (running + stopped)</span>
+  <h3 data-lang="fr">Conteneurs</h3>
+  <h3 data-lang="en">Containers</h3>
+  <div data-lang="fr"><pre data-lang="bash"><code>docker container ls -a                   <span class="tok-c"># lister tous (running + stopped)</span>
 docker container run -d --name n image   <span class="tok-c"># lancer en background</span>
 docker container run -it --rm image sh   <span class="tok-c"># interactif jetable</span>
 docker container exec -it n sh           <span class="tok-c"># shell dans un conteneur</span>
@@ -1896,16 +2599,33 @@ docker container kill n                  <span class="tok-c"># tuer (SIGKILL)</s
 docker container rm -f n                 <span class="tok-c"># supprimer</span>
 docker container stats                   <span class="tok-c"># top-like temps réel</span>
 docker container inspect n               <span class="tok-c"># détails JSON</span>
-docker container prune                   <span class="tok-c"># supprimer tous arrêtés</span></code></pre>
+docker container prune                   <span class="tok-c"># supprimer tous arrêtés</span></code></pre></div>
+  <div data-lang="en"><pre data-lang="bash"><code>docker container ls -a                   <span class="tok-c"># list all (running + stopped)</span>
+docker container run -d --name n image   <span class="tok-c"># launch in background</span>
+docker container run -it --rm image sh   <span class="tok-c"># interactive throwaway</span>
+docker container exec -it n sh           <span class="tok-c"># shell into a container</span>
+docker container logs -f n               <span class="tok-c"># follow logs</span>
+docker container stop n                  <span class="tok-c"># stop (SIGTERM)</span>
+docker container kill n                  <span class="tok-c"># kill (SIGKILL)</span>
+docker container rm -f n                 <span class="tok-c"># remove</span>
+docker container stats                   <span class="tok-c"># real-time top-like</span>
+docker container inspect n               <span class="tok-c"># JSON details</span>
+docker container prune                   <span class="tok-c"># remove all stopped</span></code></pre></div>
 
   <h3>Volumes</h3>
-  <pre data-lang="bash"><code>docker volume create name
+  <div data-lang="fr"><pre data-lang="bash"><code>docker volume create name
 docker volume ls
 docker volume inspect name
 docker volume rm name
-docker volume prune                      <span class="tok-c"># supprimer orphelins</span></code></pre>
+docker volume prune                      <span class="tok-c"># supprimer orphelins</span></code></pre></div>
+  <div data-lang="en"><pre data-lang="bash"><code>docker volume create name
+docker volume ls
+docker volume inspect name
+docker volume rm name
+docker volume prune                      <span class="tok-c"># remove orphans</span></code></pre></div>
 
-  <h3>Réseaux</h3>
+  <h3 data-lang="fr">Réseaux</h3>
+  <h3 data-lang="en">Networks</h3>
   <pre data-lang="bash"><code>docker network create --driver bridge mynet
 docker network ls
 docker network inspect mynet
@@ -1913,7 +2633,7 @@ docker network connect mynet container
 docker network rm mynet</code></pre>
 
   <h3>Compose v2</h3>
-  <pre data-lang="bash"><code>docker compose up -d                     <span class="tok-c"># démarrer en arrière-plan</span>
+  <div data-lang="fr"><pre data-lang="bash"><code>docker compose up -d                     <span class="tok-c"># démarrer en arrière-plan</span>
 docker compose ps                        <span class="tok-c"># lister</span>
 docker compose logs -f service           <span class="tok-c"># logs d'un service</span>
 docker compose exec service sh           <span class="tok-c"># shell dans un service</span>
@@ -1921,7 +2641,16 @@ docker compose restart service           <span class="tok-c"># redémarrer un se
 docker compose down                      <span class="tok-c"># tout arrêter</span>
 docker compose down -v                   <span class="tok-c"># + supprimer volumes</span>
 docker compose pull                      <span class="tok-c"># mettre à jour les images</span>
-docker compose build                     <span class="tok-c"># reconstruire</span></code></pre>
+docker compose build                     <span class="tok-c"># reconstruire</span></code></pre></div>
+  <div data-lang="en"><pre data-lang="bash"><code>docker compose up -d                     <span class="tok-c"># start in background</span>
+docker compose ps                        <span class="tok-c"># list</span>
+docker compose logs -f service           <span class="tok-c"># logs of a service</span>
+docker compose exec service sh           <span class="tok-c"># shell into a service</span>
+docker compose restart service           <span class="tok-c"># restart a service</span>
+docker compose down                      <span class="tok-c"># stop everything</span>
+docker compose down -v                   <span class="tok-c"># + remove volumes</span>
+docker compose pull                      <span class="tok-c"># update images</span>
+docker compose build                     <span class="tok-c"># rebuild</span></code></pre></div>
 
   <h3>Buildx (multi-arch)</h3>
   <pre data-lang="bash"><code>docker buildx ls
@@ -1929,20 +2658,28 @@ docker buildx create --name multi --use
 docker buildx build --platform linux/amd64,linux/arm64 \
   -t name:tag --push .</code></pre>
 
-  <h3>Système</h3>
-  <pre data-lang="bash"><code>docker system df                         <span class="tok-c"># utilisation disque</span>
+  <h3 data-lang="fr">Système</h3>
+  <h3 data-lang="en">System</h3>
+  <div data-lang="fr"><pre data-lang="bash"><code>docker system df                         <span class="tok-c"># utilisation disque</span>
 docker system prune -a --volumes         <span class="tok-c"># grand ménage</span>
 docker info                              <span class="tok-c"># informations daemon</span>
-docker events                            <span class="tok-c"># flux d'événements</span></code></pre>
+docker events                            <span class="tok-c"># flux d'événements</span></code></pre></div>
+  <div data-lang="en"><pre data-lang="bash"><code>docker system df                         <span class="tok-c"># disk usage</span>
+docker system prune -a --volumes         <span class="tok-c"># big cleanup</span>
+docker info                              <span class="tok-c"># daemon info</span>
+docker events                            <span class="tok-c"># event stream</span></code></pre></div>
 </section>
 
 <!-- ===== 7. KUBERNETES ===== -->
 <section id="kubernetes">
-  <span class="section-num">§ 07 — Suite logique</span>
-  <h2>Vers Kubernetes — Ce qui se transpose</h2>
-  <p class="lede">Une fois Fast-Docker maîtrisé, Kubernetes devient la suite naturelle pour qui vise la production. Bonne nouvelle : la plupart des concepts Docker se retrouvent en K8s, sous d'autres noms.</p>
+  <span class="section-num" data-lang="fr">§ 07 — Suite logique</span>
+  <span class="section-num" data-lang="en">§ 07 — What's next</span>
+  <h2 data-lang="fr">Vers Kubernetes — Ce qui se transpose</h2>
+  <h2 data-lang="en">Toward Kubernetes — What carries over</h2>
+  <p class="lede" data-lang="fr">Une fois Fast-Docker maîtrisé, Kubernetes devient la suite naturelle pour qui vise la production. Bonne nouvelle : la plupart des concepts Docker se retrouvent en K8s, sous d'autres noms.</p>
+  <p class="lede" data-lang="en">Once Fast-Docker is mastered, Kubernetes becomes the natural next step for anyone aiming at production. Good news: most Docker concepts reappear in K8s, under different names.</p>
 
-  <div class="table-wrap">
+  <div class="table-wrap" data-lang="fr">
   <table>
     <thead><tr><th>Docker (ce guide)</th><th>Kubernetes</th><th>Note</th></tr></thead>
     <tbody>
@@ -1959,65 +2696,129 @@ docker events                            <span class="tok-c"># flux d'événemen
     </tbody>
   </table>
   </div>
+  <div class="table-wrap" data-lang="en">
+  <table>
+    <thead><tr><th>Docker (this guide)</th><th>Kubernetes</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>Image, registry, pull</td><td>Image, registry, <code>imagePullSecrets</code></td><td>Same, K8s adds credentials management</td></tr>
+      <tr><td>Container</td><td><code>Pod</code> (1+ containers)</td><td>The pod is the K8s deployment unit</td></tr>
+      <tr><td>Compose service</td><td><code>Deployment</code> + <code>Service</code></td><td>Replicated deployment + network exposure</td></tr>
+      <tr><td><code>depends_on healthy</code></td><td><code>initContainers</code> + probes</td><td>Init containers before the main pod</td></tr>
+      <tr><td>Docker volume</td><td><code>PersistentVolumeClaim</code></td><td>Abstract storage request</td></tr>
+      <tr><td>Bridge / overlay network</td><td>CNI (Calico, Cilium, Flannel)</td><td>Pluggable network plugins</td></tr>
+      <tr><td><code>HEALTHCHECK</code></td><td><code>livenessProbe</code> / <code>readinessProbe</code></td><td>Dockerfile HEALTHCHECK is <strong>ignored</strong> in K8s</td></tr>
+      <tr><td><code>USER non-root</code></td><td><code>securityContext.runAsNonRoot: true</code></td><td>Same, more granular control in K8s</td></tr>
+      <tr><td>Multi-stage build</td><td>Same</td><td>Prepare lightweight CKA images</td></tr>
+      <tr><td>Env variables</td><td><code>ConfigMap</code> + <code>Secret</code></td><td>K8s separates configuration and secrets</td></tr>
+    </tbody>
+  </table>
+  </div>
 
-  <h3>Concepts Docker non couverts par CKA mais essentiels</h3>
-  <p>Le syllabus CKA est centré ops, pas build. Les compétences suivantes restent à votre charge :</p>
-  <ul>
+  <h3 data-lang="fr">Concepts Docker non couverts par CKA mais essentiels</h3>
+  <h3 data-lang="en">Docker concepts not covered by CKA but essential</h3>
+  <p data-lang="fr">Le syllabus CKA est centré ops, pas build. Les compétences suivantes restent à votre charge :</p>
+  <p data-lang="en">The CKA syllabus is ops-focused, not build-focused. The following skills remain on you:</p>
+  <ul data-lang="fr">
     <li>Multi-stage builds</li>
     <li>BuildKit et build secrets</li>
     <li>Distroless</li>
     <li>Scan de vulnérabilités</li>
     <li>Multi-arch builds</li>
   </ul>
-  <p>Ce guide les couvre toutes — ne les zappez pas même si elles ne sont pas testées au CKA.</p>
+  <ul data-lang="en">
+    <li>Multi-stage builds</li>
+    <li>BuildKit and build secrets</li>
+    <li>Distroless</li>
+    <li>Vulnerability scanning</li>
+    <li>Multi-arch builds</li>
+  </ul>
+  <p data-lang="fr">Ce guide les couvre toutes — ne les zappez pas même si elles ne sont pas testées au CKA.</p>
+  <p data-lang="en">This guide covers all of them — don't skip them even if they aren't tested in CKA.</p>
 </section>
 
 <!-- ===== 8. RESSOURCES ===== -->
 <section id="ressources">
-  <span class="section-num">§ 08 — Pour aller plus loin</span>
-  <h2>Ressources externes</h2>
+  <span class="section-num" data-lang="fr">§ 08 — Pour aller plus loin</span>
+  <span class="section-num" data-lang="en">§ 08 — Going further</span>
+  <h2 data-lang="fr">Ressources externes</h2>
+  <h2 data-lang="en">External resources</h2>
 
-  <h3>Documentation officielle</h3>
-  <ul>
+  <h3 data-lang="fr">Documentation officielle</h3>
+  <h3 data-lang="en">Official documentation</h3>
+  <ul data-lang="fr">
     <li><a href="https://docs.docker.com/">docs.docker.com</a> — référence complète</li>
     <li><a href="https://docs.docker.com/build/buildkit/">BuildKit</a> — moteur de build moderne</li>
     <li><a href="https://docs.docker.com/compose/">Docker Compose v2</a></li>
     <li><a href="https://kubernetes.io/docs/">kubernetes.io</a> — pour la suite</li>
   </ul>
+  <ul data-lang="en">
+    <li><a href="https://docs.docker.com/">docs.docker.com</a> — full reference</li>
+    <li><a href="https://docs.docker.com/build/buildkit/">BuildKit</a> — modern build engine</li>
+    <li><a href="https://docs.docker.com/compose/">Docker Compose v2</a></li>
+    <li><a href="https://kubernetes.io/docs/">kubernetes.io</a> — for what's next</li>
+  </ul>
 
-  <h3>Outils complémentaires</h3>
-  <ul>
+  <h3 data-lang="fr">Outils complémentaires</h3>
+  <h3 data-lang="en">Complementary tools</h3>
+  <ul data-lang="fr">
     <li><a href="https://github.com/wagoodman/dive">dive</a> — explorer les couches d'une image visuellement</li>
     <li><a href="https://github.com/hadolint/hadolint">hadolint</a> — linter Dockerfile (à mettre en pre-commit Git)</li>
     <li><a href="https://github.com/aquasecurity/trivy">Trivy</a> — scanner de vulnérabilités open source</li>
     <li><a href="https://github.com/GoogleContainerTools/distroless">Distroless</a> — images minimales Google</li>
     <li><a href="https://chainguard.dev/images">Chainguard Images</a> — alternative distroless durcie</li>
   </ul>
+  <ul data-lang="en">
+    <li><a href="https://github.com/wagoodman/dive">dive</a> — visually explore an image's layers</li>
+    <li><a href="https://github.com/hadolint/hadolint">hadolint</a> — Dockerfile linter (use as a Git pre-commit)</li>
+    <li><a href="https://github.com/aquasecurity/trivy">Trivy</a> — open-source vulnerability scanner</li>
+    <li><a href="https://github.com/GoogleContainerTools/distroless">Distroless</a> — Google minimal images</li>
+    <li><a href="https://chainguard.dev/images">Chainguard Images</a> — hardened distroless alternative</li>
+  </ul>
 
-  <h3>Sécurité</h3>
-  <ul>
+  <h3 data-lang="fr">Sécurité</h3>
+  <h3 data-lang="en">Security</h3>
+  <ul data-lang="fr">
     <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html">OWASP Docker Security Cheat Sheet</a></li>
     <li><a href="https://docs.docker.com/scout/">Docker Scout</a> — analyse de supply chain</li>
     <li><a href="https://www.cisecurity.org/benchmark/docker">CIS Docker Benchmark</a> — checklist de durcissement</li>
   </ul>
+  <ul data-lang="en">
+    <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html">OWASP Docker Security Cheat Sheet</a></li>
+    <li><a href="https://docs.docker.com/scout/">Docker Scout</a> — supply chain analysis</li>
+    <li><a href="https://www.cisecurity.org/benchmark/docker">CIS Docker Benchmark</a> — hardening checklist</li>
+  </ul>
 
-  <h3>Pratique en ligne</h3>
-  <ul>
+  <h3 data-lang="fr">Pratique en ligne</h3>
+  <h3 data-lang="en">Online practice</h3>
+  <ul data-lang="fr">
     <li><a href="https://labs.play-with-docker.com/">Play with Docker</a> — sandbox sans installation</li>
     <li><a href="https://killercoda.com/playgrounds/scenario/docker">Killercoda Docker</a> — scénarios interactifs</li>
+  </ul>
+  <ul data-lang="en">
+    <li><a href="https://labs.play-with-docker.com/">Play with Docker</a> — sandbox, no install needed</li>
+    <li><a href="https://killercoda.com/playgrounds/scenario/docker">Killercoda Docker</a> — interactive scenarios</li>
   </ul>
 
   <hr class="ornament">
 
-  <p class="pull">Lire la documentation, c'est apprendre la grammaire. Faire les labs, c'est apprendre à parler.</p>
+  <p class="pull" data-lang="fr">Lire la documentation, c'est apprendre la grammaire. Faire les labs, c'est apprendre à parler.</p>
+  <p class="pull" data-lang="en">Reading the docs is learning the grammar. Doing the labs is learning to speak.</p>
 
-  <h3>Comment utiliser ce fork au quotidien</h3>
-  <ol>
+  <h3 data-lang="fr">Comment utiliser ce fork au quotidien</h3>
+  <h3 data-lang="en">How to use this fork day-to-day</h3>
+  <ol data-lang="fr">
     <li><strong>Forker</strong> le repository pour avoir votre copie.</li>
     <li><strong>Cloner</strong> en local : <code>git clone</code>.</li>
     <li><strong>Créer un dossier <code>notes/</code></strong> où vous prenez vos notes lab par lab.</li>
     <li><strong>Tenir un journal</strong> des erreurs rencontrées et de leurs résolutions — c'est le contenu le plus précieux à long terme.</li>
     <li><strong>Synchroniser</strong> périodiquement avec l'upstream <code>omerbsezer/Fast-Docker</code> pour récupérer les mises à jour.</li>
+  </ol>
+  <ol data-lang="en">
+    <li><strong>Fork</strong> the repository to get your own copy.</li>
+    <li><strong>Clone</strong> locally: <code>git clone</code>.</li>
+    <li><strong>Create a <code>notes/</code> folder</strong> where you keep notes lab by lab.</li>
+    <li><strong>Keep a journal</strong> of errors encountered and how you fixed them — that's the most valuable long-term content.</li>
+    <li><strong>Sync</strong> periodically with the upstream <code>omerbsezer/Fast-Docker</code> to pick up updates.</li>
   </ol>
 </section>
 
@@ -2028,10 +2829,38 @@ docker events                            <span class="tok-c"># flux d'événemen
 <!-- FOOTER -->
 <!-- ============================================ -->
 <footer>
-  <p><span class="ornament">❋</span> Fast-Docker — Guide d'apprentissage <span class="ornament">❋</span></p>
-  <p>Édition Avril 2026 · Compagnon pratique pour le repository <code>Jihatech/Fast-Docker</code></p>
-  <p>Distribué sous licence MIT, comme le repository original.</p>
+  <p data-lang="fr"><span class="ornament">❋</span> Fast-Docker — Guide d'apprentissage <span class="ornament">❋</span></p>
+  <p data-lang="en"><span class="ornament">❋</span> Fast-Docker — Learning guide <span class="ornament">❋</span></p>
+  <p data-lang="fr">Édition Avril 2026 · Compagnon pratique pour le repository <code>Jihatech/Fast-Docker</code></p>
+  <p data-lang="en">April 2026 edition · Practical companion for the <code>Jihatech/Fast-Docker</code> repository</p>
+  <p data-lang="fr">Distribué sous licence MIT, comme le repository original.</p>
+  <p data-lang="en">Distributed under the MIT license, like the original repository.</p>
 </footer>
+
+<script>
+(function() {
+  var html = document.documentElement;
+  var saved = null;
+  try { saved = localStorage.getItem('lang'); } catch (e) {}
+  if (saved === 'en' || saved === 'fr') html.setAttribute('lang', saved);
+  var buttons = document.querySelectorAll('[data-set-lang]');
+  function sync() {
+    var current = html.getAttribute('lang');
+    buttons.forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-set-lang') === current);
+    });
+  }
+  buttons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var lang = btn.getAttribute('data-set-lang');
+      html.setAttribute('lang', lang);
+      try { localStorage.setItem('lang', lang); } catch (e) {}
+      sync();
+    });
+  });
+  sync();
+})();
+</script>
 
 </body>
 </html>
