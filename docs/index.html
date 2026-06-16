@@ -918,6 +918,19 @@ sudo usermod -aG docker $USER
     If <code>docker-compose</code> (with dash) responds but <code>docker compose</code> (with space) doesn't, your installation uses v1, deprecated since June 2023. All examples in this guide use v2 syntax.
   </div>
 
+  <h4 data-lang="fr">Les deux blocages les plus fréquents au démarrage</h4>
+  <h4 data-lang="en">The two most common startup blockers</h4>
+  <div class="callout" data-lang="fr">
+    <span class="callout-label">Dépannage</span>
+    <strong>« Cannot connect to the Docker daemon »</strong> — le moteur n'est pas démarré. Sous Linux : <code>sudo systemctl start docker</code>. Sous macOS/Windows : lancer <strong>Docker Desktop</strong> et attendre que la baleine soit stable.<br><br>
+    <strong>« You have reached your pull rate limit »</strong> — Docker Hub limite les <em>pulls</em> anonymes (fréquent sur IP partagée, entreprise, CI). Solutions : <code>docker login</code> avec un compte gratuit, ou configurer un <strong>registry-mirror</strong> (voir LAB 09) — par exemple <code>https://mirror.gcr.io</code>.
+  </div>
+  <div class="callout" data-lang="en">
+    <span class="callout-label">Troubleshooting</span>
+    <strong>"Cannot connect to the Docker daemon"</strong> — the engine isn't running. On Linux: <code>sudo systemctl start docker</code>. On macOS/Windows: launch <strong>Docker Desktop</strong> and wait for the whale to settle.<br><br>
+    <strong>"You have reached your pull rate limit"</strong> — Docker Hub throttles anonymous <em>pulls</em> (common on shared IPs, corporate networks, CI). Fixes: <code>docker login</code> with a free account, or configure a <strong>registry-mirror</strong> (see LAB 09) — for example <code>https://mirror.gcr.io</code>.
+  </div>
+
   <h3 data-lang="fr">Cloner le repository</h3>
   <h3 data-lang="en">Clone the repository</h3>
   <pre data-lang="bash"><code>git clone https://github.com/Jihatech/Fast-Docker.git
@@ -1425,13 +1438,53 @@ ls -la</code></pre>
       <li>Inspecting a running container</li>
     </ul>
 
+    <h4 data-lang="fr">Fichiers de départ</h4>
+    <h4 data-lang="en">Starting files</h4>
+    <p data-lang="fr">Créez un dossier vide et placez-y ces trois fichiers. Les commandes ci-dessous construisent l'image <code>hello</code> à partir d'eux. <em>(Image de base modernisée par rapport au fichier source, qui utilise une version de Python datée de 2018.)</em></p>
+    <p data-lang="en">Create an empty folder and place these three files in it. The commands below build the <code>hello</code> image from them. <em>(Base image modernized compared to the source file, which uses a 2018-era Python version.)</em></p>
+    <div data-lang="fr"><pre data-lang="dockerfile"><code><span class="tok-c"># Dockerfile</span>
+<span class="tok-k">FROM</span> python:3.12-alpine
+<span class="tok-k">WORKDIR</span> /app
+<span class="tok-k">COPY</span> . .
+<span class="tok-k">RUN</span> pip install --no-cache-dir -r requirements.txt
+<span class="tok-k">EXPOSE</span> 5000
+<span class="tok-k">CMD</span> [<span class="tok-s">"python"</span>, <span class="tok-s">"./index.py"</span>]</code></pre></div>
+    <div data-lang="en"><pre data-lang="dockerfile"><code><span class="tok-c"># Dockerfile</span>
+<span class="tok-k">FROM</span> python:3.12-alpine
+<span class="tok-k">WORKDIR</span> /app
+<span class="tok-k">COPY</span> . .
+<span class="tok-k">RUN</span> pip install --no-cache-dir -r requirements.txt
+<span class="tok-k">EXPOSE</span> 5000
+<span class="tok-k">CMD</span> [<span class="tok-s">"python"</span>, <span class="tok-s">"./index.py"</span>]</code></pre></div>
+    <pre data-lang="python"><code><span class="tok-c"># index.py</span>
+<span class="tok-k">from</span> flask <span class="tok-k">import</span> Flask
+app = Flask(__name__)
+
+<span class="tok-f">@app.route(<span class="tok-s">"/"</span>)</span>
+<span class="tok-k">def</span> <span class="tok-f">hello</span>():
+    <span class="tok-k">return</span> <span class="tok-s">"Hello World!"</span>
+
+<span class="tok-k">if</span> __name__ == <span class="tok-s">"__main__"</span>:
+    app.run(host=<span class="tok-s">"0.0.0.0"</span>, port=5000)</code></pre>
+    <pre data-lang="text"><code><span class="tok-c"># requirements.txt</span>
+flask</code></pre>
+    <div class="callout" data-lang="fr">
+      <span class="callout-label">Note</span>
+      Le <code>CMD</code> est ici en <strong>forme JSON</strong> (<code>["python", "./index.py"]</code>) et non en forme shell. C'est la forme recommandée : elle transmet correctement les signaux (Ctrl-C, arrêt propre) au processus.
+    </div>
+    <div class="callout" data-lang="en">
+      <span class="callout-label">Note</span>
+      The <code>CMD</code> here uses <strong>JSON form</strong> (<code>["python", "./index.py"]</code>) rather than shell form. This is the recommended form: it correctly forwards signals (Ctrl-C, graceful shutdown) to the process.
+    </div>
+
     <h4 data-lang="fr">Commandes essentielles</h4>
     <h4 data-lang="en">Essential commands</h4>
     <div data-lang="fr"><pre data-lang="bash"><code><span class="tok-c"># 1. Construire l'image depuis un Dockerfile</span>
 docker image build -t hello .
 
-<span class="tok-c"># 2. Lancer un conteneur</span>
-docker container run -d --name c1 hello
+<span class="tok-c"># 2. Lancer un conteneur (publier le port 5000)</span>
+docker container run -d --name c1 -p 5000:5000 hello
+<span class="tok-c"># Ouvrir http://localhost:5000 → "Hello World!"</span>
 
 <span class="tok-c"># 3. Inspecter</span>
 docker container ls
@@ -1444,8 +1497,9 @@ docker image rm hello</code></pre></div>
     <div data-lang="en"><pre data-lang="bash"><code><span class="tok-c"># 1. Build the image from a Dockerfile</span>
 docker image build -t hello .
 
-<span class="tok-c"># 2. Run a container</span>
-docker container run -d --name c1 hello
+<span class="tok-c"># 2. Run a container (publish port 5000)</span>
+docker container run -d --name c1 -p 5000:5000 hello
+<span class="tok-c"># Open http://localhost:5000 → "Hello World!"</span>
 
 <span class="tok-c"># 3. Inspect</span>
 docker container ls
@@ -1676,8 +1730,10 @@ docker volume inspect data</code></pre></div>
     <span class="tok-k">image</span>: mysql:8.0
     <span class="tok-k">restart</span>: always
     <span class="tok-k">environment</span>:
-      MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
     <span class="tok-k">volumes</span>:
       - mydata:/var/lib/mysql
     <span class="tok-k">healthcheck</span>:
@@ -1694,7 +1750,9 @@ docker volume inspect data</code></pre></div>
       - <span class="tok-s">"8080:80"</span>
     <span class="tok-k">environment</span>:
       WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: secret
+      WORDPRESS_DB_NAME: wordpress
 
 <span class="tok-k">volumes</span>:
   <span class="tok-k">mydata</span>:</code></pre></div>
@@ -1704,8 +1762,10 @@ docker volume inspect data</code></pre></div>
     <span class="tok-k">image</span>: mysql:8.0
     <span class="tok-k">restart</span>: always
     <span class="tok-k">environment</span>:
-      MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
     <span class="tok-k">volumes</span>:
       - mydata:/var/lib/mysql
     <span class="tok-k">healthcheck</span>:
@@ -1722,7 +1782,9 @@ docker volume inspect data</code></pre></div>
       - <span class="tok-s">"8080:80"</span>
     <span class="tok-k">environment</span>:
       WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: secret
+      WORDPRESS_DB_NAME: wordpress
 
 <span class="tok-k">volumes</span>:
   <span class="tok-k">mydata</span>:</code></pre></div>
@@ -1881,6 +1943,10 @@ docker swarm leave --force</code></pre>
     <div data-lang="fr"><pre data-lang="bash"><code><span class="tok-c"># Lancer un registry local</span>
 docker run -d -p 5000:5000 --name registry registry:2
 
+<span class="tok-c"># Image à publier : soit "hello" (construite au LAB 01),</span>
+<span class="tok-c"># soit n'importe quelle image publique si vous démarrez ici :</span>
+docker pull alpine && docker tag alpine hello
+
 <span class="tok-c"># Tagger une image pour le registry local</span>
 docker tag hello localhost:5000/hello:v1
 
@@ -1895,6 +1961,10 @@ curl http://localhost:5000/v2/hello/tags/list
 docker pull localhost:5000/hello:v1</code></pre></div>
     <div data-lang="en"><pre data-lang="bash"><code><span class="tok-c"># Run a local registry</span>
 docker run -d -p 5000:5000 --name registry registry:2
+
+<span class="tok-c"># Image to publish: either "hello" (built in LAB 01),</span>
+<span class="tok-c"># or any public image if you start here:</span>
+docker pull alpine && docker tag alpine hello
 
 <span class="tok-c"># Tag an image for the local registry</span>
 docker tag hello localhost:5000/hello:v1
