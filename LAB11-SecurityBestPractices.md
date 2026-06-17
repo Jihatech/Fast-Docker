@@ -374,6 +374,8 @@ trivy image --format json nginx:1.18 > report.json
 Create `Dockerfile.test`:
 
 ```dockerfile
+# Intentionally outdated & insecure — used here to trigger findings.
+# ubuntu:18.04 is EOL and python2.7 is end-of-life: do NOT use in production.
 FROM ubuntu:18.04
 RUN apt-get update && apt-get install -y python2.7 curl
 ```
@@ -429,7 +431,7 @@ func main() {
 Create `Dockerfile.singlestage`:
 
 ```dockerfile
-FROM golang:1.21
+FROM golang:1.23
 
 WORKDIR /app
 COPY app.go .
@@ -455,7 +457,7 @@ Create `Dockerfile.multistage`:
 
 ```dockerfile
 # Build stage
-FROM golang:1.21 AS builder
+FROM golang:1.23 AS builder
 
 WORKDIR /app
 COPY app.go .
@@ -531,7 +533,7 @@ Create `Dockerfile.secrets`:
 ```dockerfile
 # syntax=docker/dockerfile:1.4
 
-FROM alpine:latest
+FROM alpine:3.20
 
 # Use secret during build (not stored in image)
 RUN --mount=type=secret,id=mysecret \
@@ -560,7 +562,7 @@ The secret is NOT in the image history!
 ### Step 4: Use environment variables at runtime instead
 
 ```dockerfile
-FROM alpine:latest
+FROM alpine:3.20
 # Don't COPY secrets
 # Use environment variables at runtime
 CMD sh -c 'echo "API Key: $API_KEY"'

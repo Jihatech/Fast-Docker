@@ -190,7 +190,7 @@ Create `Dockerfile`:
 # syntax=docker/dockerfile:1.4
 
 # Build stage - use build platform
-FROM --platform=$BUILDPLATFORM golang:1.21-alpine AS builder
+FROM --platform=$BUILDPLATFORM golang:1.23-alpine AS builder
 
 # Build arguments
 ARG TARGETPLATFORM
@@ -206,7 +206,7 @@ RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
     go build -ldflags="-s -w" -o app main.go
 
 # Final stage - minimal image
-FROM alpine:latest
+FROM alpine:3.20
 
 RUN apk --no-cache add ca-certificates
 

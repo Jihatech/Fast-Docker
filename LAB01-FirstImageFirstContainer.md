@@ -20,12 +20,12 @@ if __name__ == "__main__":
 - Create “Dockerfile” (there is no extension) in the “example” directory (Copy from below) (it copies to /app directory in the container, run requirements.txt, expose 5000 port and run python app).
 
 ```
-FROM python:alpine3.7
-COPY . /app
+FROM python:3.12-alpine
 WORKDIR /app
-RUN pip install -r requirements.txt
+COPY . .
+RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5000
-CMD python ./index.py
+CMD ["python", "./index.py"]
 ```
 
 - Create “requirements.txt” and copy it below (it only includes “flask”).

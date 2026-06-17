@@ -32,11 +32,9 @@ RUN choco install -y visualstudio2019community
 # install conan
 RUN pip3 install conan
 
-# config conan
-RUN conan profile new default --detect `
-    && conan profile show default `
-	&& conan profile update settings.build_type=RelWithDebInfo default `
-	&& conan remote list
+# config conan (Conan 2.x syntax)
+RUN conan profile detect --force `
+    && conan profile show
 
 # install cmake
 RUN choco install cmake -y `

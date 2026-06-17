@@ -1,59 +1,35 @@
-## LAB-07: Creating Docker Container to Build C++ on Ubuntu18.04
+## LAB-07: Creating Docker Container to Build C++ on Ubuntu 22.04
 
-- In this scenario, we'll create Docker file from scratch that includes Cmake, Git, Python3, Conan, Gcc.
+- In this scenario, we'll create a Dockerfile from scratch that includes CMake, Git, Python3, Conan and GCC.
 - **Dockerfile**: https://github.com/omerbsezer/Fast-Docker/blob/main/labs/linux-dockerfile-c%2B%2B/Dockerfile
-- Create Dockerfile that includes following content:
+- Create a Dockerfile that includes the following content:
+
+> **2024/2025 update:** modernized to **Ubuntu 22.04 LTS**. GCC (gcc-11) and CMake now come straight from the distribution (no PPA, no source build), and Conan is installed at its current 2.x version with `conan profile detect`. Apt lists are cleaned in each layer to keep the image small — the hygiene practices taught in LAB 11/12.
 
 ```
-FROM ubuntu:18.04
+FROM ubuntu:22.04
+ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /home/project
 
-# Install general dependencies, update, net-tools, iputils-ping, etc.
-RUN apt-get update -y && apt-get install net-tools -y && apt-get install iputils-ping -y &&\
-	apt-get install python3-distutils -y &&  apt-get install python3-apt -y &&\
-	apt-get install sudo wget vim nano -y  
-	
+# General utilities
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends \
+        net-tools iputils-ping sudo wget vim nano ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install python3, pip3, conan, git 
-RUN apt-get install -y curl python3.7 python3.7-dev python3.7-distutils &&\
-    update-alternatives --install /usr/bin/python python /usr/bin/python3.7 1 &&\
-	update-alternatives --set python /usr/bin/python3.7 &&\
-	curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py &&\
-	python3.7 get-pip.py &&\
-	pip3 install conan &&\
-	apt-get install git -y
+# C++ build toolchain: gcc/g++ (gcc-11), make, cmake, git, python3 + pip
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends \
+        build-essential cmake git python3 python3-pip python3-dev && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install gcc8
-RUN apt install software-properties-common -y &&\
-    add-apt-repository ppa:ubuntu-toolchain-r/test -y &&\
-	apt install gcc-7 g++-7 gcc-8 g++-8 gcc-9 g++-9 -y &&\
-	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9 --slave /usr/bin/gcov gcov /usr/bin/gcov-9 &&\
-	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 80 --slave /usr/bin/g++ g++ /usr/bin/g++-8 --slave /usr/bin/gcov gcov /usr/bin/gcov-8 &&\
-	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 70 --slave /usr/bin/g++ g++ /usr/bin/g++-7 --slave /usr/bin/gcov gcov /usr/bin/gcov-7
-   
-# Install cmake3.20 
-RUN apt-get update &&\
-    wget https://github.com/Kitware/CMake/releases/download/v3.20.5/cmake-3.20.5.tar.gz &&\
-	tar zxvf cmake-3.20.5.tar.gz &&\
-	cd cmake-3.20.5 &&\
-	./bootstrap &&\
-	make -j4 &&\
-	make install &&\
-	cmake --version &&\
-	cd ..
-
-# Config Conan
-RUN pip install conan --upgrade &&\
-	conan profile new default --detect &&\
-	conan profile show default &&\
-	conan profile update settings.compiler=gcc default &&\
-	conan profile update settings.compiler.version=8 default &&\
-	conan profile update settings.compiler.libcxx=libstdc++11 default &&\
-	conan profile update settings.build_type=RelWithDebInfo default &&\
-	conan remote list
+# Conan 2.x — modern C/C++ package manager
+RUN pip3 install --no-cache-dir conan && \
+    conan profile detect --force && \
+    conan profile show
 
 # Container starts with Bash
-CMD bash
+CMD ["bash"]
 ```
 
 - Create directory on your C: (e.g. C:\Linux-Project), this directory is used for sharing file between container and host PC.

@@ -15,12 +15,12 @@ This scenario shows how to transfer content between host and container:
 #### Using image file (COPY command)
 - Copying app content into the image using the image file (e.g. [FirstImageFirstContainer.md](https://github.com/omerbsezer/Fast-Docker/blob/main/FirstImageFirstContainer.md))
 ```
-FROM python:alpine3.7
-COPY . /app
+FROM python:3.12-alpine
 WORKDIR /app
-RUN pip install -r requirements.txt
+COPY . .
+RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5000
-CMD python ./index.py
+CMD ["python", "./index.py"]
 ```
 
 #### Using bind mount/volume
